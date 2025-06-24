@@ -1,0 +1,7 @@
+http:
+  timeout:
+    unit: 'second'
+    write: '30'
+    read: '30'
+    idle: '30'
+  server: "8000"

@@ -1,0 +1,7 @@
+{
+    "database": {
+        "driver": "postgres",
+        "reader_dsn": "",
+        "writer_dsn": ""
+    }
+}
