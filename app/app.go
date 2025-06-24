@@ -7,9 +7,10 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/appconfig"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
-	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
+	fgmw "github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 )
 
@@ -40,35 +41,47 @@ func New(appCfg *appconfig.AppConfig) *App {
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}
 	if appCfg.CorsOpt == nil {
-		appCfg.CorsOpt = &middleware.CorsOpt{
+		appCfg.CorsOpt = &fgmw.CorsOpt{
 			Opts: corsBaseOpts,
 		}
 	}
 
-	mws := []middleware.RegisterMiddlewaresArg{
+	mws := []fgmw.RegisterMiddlewaresArg{
 		{
-			Name:    middleware.MIDDLEWARE_BASIC_BEARER_AUTH,
-			Handler: middleware.BasicBearerAuthMiddleware,
+			Name:    fgmw.MIDDLEWARE_BASIC_BEARER_AUTH,
+			Handler: fgmw.BasicBearerAuthMiddleware,
 		},
 		{
-			Name:    middleware.MIDDLEWARE_RECOVER_PANIC,
-			Handler: middleware.RecoverPanicMiddleware,
+			Name:    fgmw.MIDDLEWARE_RECOVER_PANIC,
+			Handler: fgmw.RecoverPanicMiddleware,
 		},
 		{
-			Name:    middleware.MIDDLEWARE_CORS,
-			Handler: middleware.Cors(*appCfg.CorsOpt),
+			Name:    fgmw.MIDDLEWARE_CORS,
+			Handler: fgmw.Cors(*appCfg.CorsOpt),
+		},
+		{
+			Name:    fgmw.MIDDLEWARE_REQUESTID,
+			Handler: middleware.RequestID,
+		},
+		{
+			Name:    fgmw.MIDDLEWARE_REALIP,
+			Handler: middleware.RealIP,
+		},
+		{
+			Name:    fgmw.MIDDLEWARE_LOGGER,
+			Handler: middleware.Logger,
 		},
 	}
 	// register middlewares
 	if len(appCfg.Middlewares) > 0 {
 		for key, mw := range appCfg.Middlewares {
-			mws = append(mws, middleware.RegisterMiddlewaresArg{
+			mws = append(mws, fgmw.RegisterMiddlewaresArg{
 				Name:    key,
 				Handler: mw,
 			})
 		}
 	}
-	middleware.RegisterMiddlewares(mws...)
+	fgmw.RegisterMiddlewares(mws...)
 
 	return &App{
 		appCfg:    appCfg,
@@ -82,7 +95,7 @@ func (app *App) Cfg() *appconfig.AppConfig {
 }
 
 func (app *App) DefineRoutes(rtr router.Router) *Server {
-	middleware.PrintRoutes(rtr.Routes())
+	fgmw.PrintRoutes(rtr.Routes())
 
 	return &Server{
 		appCfg:       app.appCfg,
