@@ -7,8 +7,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/entity"
-	projecttemplates "github.com/flazhgrowth/fg-tamagotchi/project_templates"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/entity"
+	projecttemplates "github.com/flazhgrowth/fg-tamagochi/project_templates"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

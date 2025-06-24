@@ -3,7 +3,7 @@ package brevo
 import (
 	"context"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/notification/notiftype"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/notification/notiftype"
 	"github.com/getbrevo/brevo-go/lib"
 )
 

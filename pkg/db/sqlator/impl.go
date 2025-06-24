@@ -1,8 +1,8 @@
 package sqlator
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqlreader"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqlwriter"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqlreader"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqlwriter"
 )
 
 func (actuator *SQLatorImpl) Reader() sqlreader.SQLReader {

@@ -1,11 +1,11 @@
-# FG-TAMAGOTCHI
+# FG-TAMAGOCHI
 Honestly, a rather simple wrapper around the amazing [go-chi](https://github.com/go-chi/chi).
 
 The main idea would be, how to get started, fast, using go-chi, with a few commands up on its sleeves.
 
 ## Install
 ```
-go get github.com/flazhgrowth/fg-tamagotchi
+go get github.com/flazhgrowth/fg-tamagochi
 ```
 
 ## Examples
@@ -14,10 +14,10 @@ To get started, make a main.go in root app project with a content like so:
 package main
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/app"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/serve"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/router"
+	"github.com/flazhgrowth/fg-tamagochi/app"
+	"github.com/flazhgrowth/fg-tamagochi/cmd"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
 )
 
 func main() {

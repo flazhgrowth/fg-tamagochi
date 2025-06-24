@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
 )
 
 type CmdArgs struct {

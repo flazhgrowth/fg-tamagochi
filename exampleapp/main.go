@@ -3,16 +3,16 @@ package main
 import (
 	"context"
 
-	"github.com/flazhgrowth/fg-tamagotchi/app"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/serve"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/apierrors"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/request"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/response"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/router"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/notification"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/notification/notiftype"
+	"github.com/flazhgrowth/fg-tamagochi/app"
+	"github.com/flazhgrowth/fg-tamagochi/cmd"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/request"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/notification"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/notification/notiftype"
 )
 
 func getRoutes(app *app.App) router.Router {

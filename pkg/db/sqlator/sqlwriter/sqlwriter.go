@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqltx"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
 	"github.com/jmoiron/sqlx"
 )
 

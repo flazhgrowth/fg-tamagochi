@@ -3,8 +3,8 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/request"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/response"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/request"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
 	"github.com/go-chi/cors"
 )
 

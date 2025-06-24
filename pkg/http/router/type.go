@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/handler"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/handler"
 )
 
 var (

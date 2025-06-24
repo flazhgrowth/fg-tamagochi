@@ -3,7 +3,7 @@ package sqltx
 import (
 	"context"
 
-	"github.com/flazhgrowth/fg-tamagotchi/constant"
+	"github.com/flazhgrowth/fg-tamagochi/constant"
 )
 
 func (impl *SQLTxImpl) Begin(ctx context.Context) (context.Context, error) {

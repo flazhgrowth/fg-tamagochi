@@ -1,9 +1,9 @@
 package sqlator
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqlreader"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqltx"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqlwriter"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqlreader"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqlwriter"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )

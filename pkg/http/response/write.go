@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/apierrors"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 )
 
 func (resp *ResponseImpl) Respond(data any, err error, statusCode ...int) {

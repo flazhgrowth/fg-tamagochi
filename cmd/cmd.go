@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/docs"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/initproject"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/migration"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/docs"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/initproject"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/migration"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
 	"github.com/spf13/cobra"
 )
 

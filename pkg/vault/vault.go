@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/config"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
 	"github.com/spf13/viper"
 )
 

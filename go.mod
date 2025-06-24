@@ -1,4 +1,4 @@
-module github.com/flazhgrowth/fg-tamagotchi
+module github.com/flazhgrowth/fg-tamagochi
 
 go 1.23.4
 

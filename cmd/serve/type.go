@@ -3,9 +3,9 @@ package serve
 import (
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/app"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/router"
+	"github.com/flazhgrowth/fg-tamagochi/app"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
 )
 
 type ServeCmdArgs struct {

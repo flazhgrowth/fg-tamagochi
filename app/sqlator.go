@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqltx"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
 )
 
 func (app *App) GetSQLator() sqlator.SQLator {

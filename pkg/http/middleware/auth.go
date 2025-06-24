@@ -6,12 +6,12 @@ import (
 	"time"
 
 	"github.com/flazhgrowth/fg-gotools/jwt"
-	"github.com/flazhgrowth/fg-tamagotchi/constant"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/entity"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/apierrors"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/request"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/response"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/vault"
+	"github.com/flazhgrowth/fg-tamagochi/constant"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/entity"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/request"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
 	"github.com/rs/zerolog/log"
 )
 

@@ -18,10 +18,10 @@ const (
 package main
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/app"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd"
-	"github.com/flazhgrowth/fg-tamagotchi/cmd/serve"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/router"
+	"github.com/flazhgrowth/fg-tamagochi/app"
+	"github.com/flazhgrowth/fg-tamagochi/cmd"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
 )
 
 func main() {
@@ -101,7 +101,7 @@ package {{.entity}}uc
 package {{.entity}}repo
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
 	"{{.packagename}}/internal/entity/{{.entity}}"
 )
 

@@ -3,8 +3,8 @@ package notification
 import (
 	"context"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/notification/brevo"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/notification/notiftype"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/notification/brevo"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/notification/notiftype"
 )
 
 type Notification interface {

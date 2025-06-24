@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/config"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
 	"github.com/go-chi/chi/v5"
 )
 

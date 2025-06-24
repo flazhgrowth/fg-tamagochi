@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
 )
 
 type (

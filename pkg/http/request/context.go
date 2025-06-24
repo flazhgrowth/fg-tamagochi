@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/constant"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/entity"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/apierrors"
+	"github.com/flazhgrowth/fg-tamagochi/constant"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/entity"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 )
 
 func (req *RequestImpl) GetContext() context.Context {

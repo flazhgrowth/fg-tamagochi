@@ -3,8 +3,8 @@ package router
 import (
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/handler"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/handler"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
 	"github.com/go-chi/chi/v5"
 )
 

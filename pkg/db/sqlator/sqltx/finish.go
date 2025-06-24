@@ -3,7 +3,7 @@ package sqltx
 import (
 	"context"
 
-	"github.com/flazhgrowth/fg-tamagotchi/constant"
+	"github.com/flazhgrowth/fg-tamagochi/constant"
 	"github.com/jmoiron/sqlx"
 	"github.com/rs/zerolog/log"
 )

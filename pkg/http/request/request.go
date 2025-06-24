@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/entity"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/entity"
 )
 
 type RequestImpl struct {

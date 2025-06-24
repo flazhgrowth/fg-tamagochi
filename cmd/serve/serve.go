@@ -3,9 +3,9 @@ package serve
 import (
 	"fmt"
 
-	"github.com/flazhgrowth/fg-tamagotchi/app"
-	"github.com/flazhgrowth/fg-tamagotchi/appconfig"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/config"
+	"github.com/flazhgrowth/fg-tamagochi/app"
+	"github.com/flazhgrowth/fg-tamagochi/appconfig"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
 	"github.com/spf13/cobra"
 )
 

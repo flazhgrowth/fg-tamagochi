@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagotchi/appconfig"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/db/sqlator/sqltx"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/router"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/vault"
+	"github.com/flazhgrowth/fg-tamagochi/appconfig"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
 	"github.com/go-chi/cors"
 )
 

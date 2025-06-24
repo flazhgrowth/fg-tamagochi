@@ -1,8 +1,8 @@
 package router
 
 import (
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/handler"
-	"github.com/flazhgrowth/fg-tamagotchi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/handler"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
 	"github.com/go-chi/chi/v5"
 	httpSwagger "github.com/swaggo/http-swagger"
 )
