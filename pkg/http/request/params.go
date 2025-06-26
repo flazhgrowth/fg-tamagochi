@@ -16,6 +16,10 @@ func (params ParamsValue) Int64() (int64, error) {
 	return strconv.ParseInt(string(params), 10, 64)
 }
 
+func (params ParamsValue) Bool() (bool, error) {
+	return strconv.ParseBool(string(params))
+}
+
 func (req *RequestImpl) URLParam(key string) ParamsValue {
 	return ParamsValue(chi.URLParam(req.Request, key))
 }
