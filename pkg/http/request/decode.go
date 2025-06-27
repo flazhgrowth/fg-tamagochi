@@ -41,9 +41,13 @@ func (req *RequestImpl) URLParamDecode(dest any) error {
 	}
 
 	typ := reflect.TypeOf(dest).Elem()
-	res := map[string]any{}
+	val := reflect.ValueOf(dest).Elem()
 	for i := range typ.NumField() {
 		field := typ.Field(i)
+		fieldVal := val.Field(i)
+		if !fieldVal.CanSet() {
+			continue
+		}
 
 		tag := field.Tag.Get("urlparam")
 		typetag := field.Tag.Get("urlparamtype")
@@ -54,23 +58,19 @@ func (req *RequestImpl) URLParamDecode(dest any) error {
 			if err != nil {
 				continue
 			}
-			res[tag] = actualValue
+			fieldVal.SetInt(actualValue)
 		case "string":
-			res[tag] = paramVal.String()
+			fieldVal.SetString(paramVal.String())
 		case "bool":
 			actualValue, err := paramVal.Bool()
 			if err != nil {
 				continue
 			}
-			res[tag] = actualValue
+			fieldVal.SetBool(actualValue)
 		default:
 			continue
 		}
 	}
-	resBytes, err := json.Marshal(res)
-	if err != nil {
-		return err
-	}
 
-	return json.Unmarshal(resBytes, dest)
+	return nil
 }
