@@ -40,7 +40,7 @@ func (req *RequestImpl) URLParamDecode(dest any) error {
 		return fmt.Errorf("tags: dest must be a pointer to struct")
 	}
 
-	typ := reflect.TypeOf(dest)
+	typ := reflect.TypeOf(dest).Elem()
 	res := map[string]any{}
 	for i := range typ.NumField() {
 		field := typ.Field(i)
