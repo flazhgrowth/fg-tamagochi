@@ -109,12 +109,12 @@ func New(actuator sqlator.SQLator) {{.entity}}.{{.entity_title}}Repository {
 
 	ConfigTemplate ProjectTemplate = `env: 'local'
 http:
-timeout:
-	unit: 'second'
-	write: '30'
-	read: '30'
-	idle: '30'
-server: "11011"
+  timeout:
+    unit: 'second'
+    write: '30'
+    read: '30'
+    idle: '30'
+  server: '11011'
 	`
 	VaultTemplate ProjectTemplate = `{
 	"database": {
