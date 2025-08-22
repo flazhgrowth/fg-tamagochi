@@ -69,6 +69,9 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 	if _, err := execCmd.CombinedOutput(); err != nil {
 		panic(err)
 	}
+	mkDir("./etc")
+	mkDir("./etc/config")
+	mkDir("./etc/vault")
 
 	defaultEntities := map[string]entity.ProjectSchema{
 		"account": {
