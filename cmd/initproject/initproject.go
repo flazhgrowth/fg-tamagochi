@@ -273,6 +273,11 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 		log.Error().Msgf("error on creating .gitignore from template: %s", err.Error())
 		return
 	}
+
+	if err := exec.Command("go", "mod", "tidy").Run(); err != nil {
+		log.Error().Msgf("error on running go mod tidy: %s", err.Error())
+		return
+	}
 }
 
 func copyFile(srcPath, dstPath string) error {
