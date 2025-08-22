@@ -114,16 +114,14 @@ http:
     write: '30'
     read: '30'
     idle: '30'
-  server: '11011'
-	`
+  server: '11011'`
 	VaultTemplate ProjectTemplate = `{
 	"database": {
-		"driver": "postgres | mysql",
+		"driver": "postgres",
 		"reader_dsn": "dsn",
 		"writer_dsn": "dsn"
 	}
-}
-	`
+}`
 )
 
 func (templ ProjectTemplate) WriteTo(path string, binding map[string]any) error {
