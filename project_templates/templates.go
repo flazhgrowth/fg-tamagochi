@@ -108,21 +108,21 @@ func New(actuator sqlator.SQLator) {{.entity}}.{{.entity_title}}Repository {
 	GitignoreTemplate ProjectTemplate = `/etc/*`
 
 	ConfigTemplate ProjectTemplate = `env: 'local'
-	http:
-	timeout:
-		unit: 'second'
-		write: '30'
-		read: '30'
-		idle: '30'
-	server: "11011"
+http:
+timeout:
+	unit: 'second'
+	write: '30'
+	read: '30'
+	idle: '30'
+server: "11011"
 	`
 	VaultTemplate ProjectTemplate = `{
-        "database": {
-            "driver": "postgres | mysql",
-            "reader_dsn": "dsn",
-            "writer_dsn": "dsn"
-        }
-    }
+	"database": {
+		"driver": "postgres | mysql",
+		"reader_dsn": "dsn",
+		"writer_dsn": "dsn"
+	}
+}
 	`
 )
 

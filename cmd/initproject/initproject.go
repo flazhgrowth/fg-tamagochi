@@ -108,8 +108,8 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	if err := projecttemplates.ConfigTemplate.WriteTo("./etc/config/config.go", nil); err != nil {
-		log.Error().Msgf("error on creating etc/config/config.go from template: %s", err.Error())
+	if err := projecttemplates.ConfigTemplate.WriteTo("./etc/config/config.yaml", nil); err != nil {
+		log.Error().Msgf("error on creating etc/config/config.yaml from template: %s", err.Error())
 		return
 	}
 
