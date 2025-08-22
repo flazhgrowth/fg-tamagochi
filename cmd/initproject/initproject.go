@@ -61,6 +61,14 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 	if err != nil {
 		panic(err)
 	}
+	if packagename == "" {
+		panic("packagename is required")
+	}
+
+	execCmd := exec.Command("go", "mod", "init", packagename)
+	if _, err := execCmd.CombinedOutput(); err != nil {
+		panic(err)
+	}
 
 	defaultEntities := map[string]entity.ProjectSchema{
 		"account": {
@@ -91,9 +99,19 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 		log.Error().Msgf("error on creating ./internal dir %s", err.Error())
 		return
 	}
-	// copyFile("./project_templates/main.go.templ", "./main.go.templ")
+
 	if err := projecttemplates.MaingoTemplate.WriteTo("./main.go", nil); err != nil {
 		log.Error().Msgf("error on creating main.go from template: %s", err.Error())
+		return
+	}
+
+	if err := projecttemplates.ConfigTemplate.WriteTo("./etc/config/config.go", nil); err != nil {
+		log.Error().Msgf("error on creating etc/config/config.go from template: %s", err.Error())
+		return
+	}
+
+	if err := projecttemplates.VaultTemplate.WriteTo("./etc/vault/vault.json", nil); err != nil {
+		log.Error().Msgf("error on creating etc/vault/vault.json from template: %s", err.Error())
 		return
 	}
 

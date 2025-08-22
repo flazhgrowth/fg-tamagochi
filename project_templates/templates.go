@@ -14,8 +14,7 @@ type (
 )
 
 const (
-	MaingoTemplate ProjectTemplate = `
-package main
+	MaingoTemplate ProjectTemplate = `package main
 
 import (
 	"github.com/flazhgrowth/fg-tamagochi/app"
@@ -35,30 +34,24 @@ func main() {
 }
 	`
 
-	EntityTemplate ProjectTemplate = `
-package {{.entity}}
-	`
+	EntityTemplate ProjectTemplate = `package {{.entity}}`
 
-	EntityAPIInterfaceTemplate ProjectTemplate = `
-package {{.entity}}
+	EntityAPIInterfaceTemplate ProjectTemplate = `package {{.entity}}
 
 type {{.entity_title}}API interface {}
 	`
 
-	EntityUsecaseInterfaceTemplate ProjectTemplate = `
-package {{.entity}}
+	EntityUsecaseInterfaceTemplate ProjectTemplate = `package {{.entity}}
 
 type {{.entity_title}}Usecase interface {}
 	`
 
-	EntityRepositoryInterfaceTemplate ProjectTemplate = `
-package {{.entity}}
+	EntityRepositoryInterfaceTemplate ProjectTemplate = `package {{.entity}}
 
 type {{.entity_title}}Repository interface {}
 	`
 
-	TransportImplTemplate ProjectTemplate = `
-package {{.entity}}api
+	TransportImplTemplate ProjectTemplate = `package {{.entity}}api
 
 import "{{.packagename}}/internal/entity/{{.entity}}"
 
@@ -73,12 +66,9 @@ func New({{.entity}}usecase {{.entity}}.{{.entity_title}}Usecase) {{.entity}}.{{
 }
 	`
 
-	TransportImplEmptyTemplate ProjectTemplate = `
-package {{.entity}}api
-	`
+	TransportImplEmptyTemplate ProjectTemplate = `package {{.entity}}api`
 
-	UsecaseImplTemplate ProjectTemplate = `
-package {{.entity}}uc
+	UsecaseImplTemplate ProjectTemplate = `package {{.entity}}uc
 
 import "{{.packagename}}/internal/entity/{{.entity}}"
 
@@ -93,12 +83,9 @@ func New({{.entity}}repo {{.entity}}.{{.entity_title}}Repository) {{.entity}}.{{
 }
 	`
 
-	UsecaseImplEmptyTemplate ProjectTemplate = `
-package {{.entity}}uc
-	`
+	UsecaseImplEmptyTemplate ProjectTemplate = `package {{.entity}}uc`
 
-	DBRepositoryImplTemplate ProjectTemplate = `
-package {{.entity}}repo
+	DBRepositoryImplTemplate ProjectTemplate = `package {{.entity}}repo
 
 import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
@@ -116,12 +103,26 @@ func New(actuator sqlator.SQLator) {{.entity}}.{{.entity_title}}Repository {
 }
 	`
 
-	DBRepositoryImplEmptyTemplate ProjectTemplate = `
-package {{.entity}}repo
-	`
+	DBRepositoryImplEmptyTemplate ProjectTemplate = `package {{.entity}}repo`
 
-	GitignoreTemplate ProjectTemplate = `
-/etc/*
+	GitignoreTemplate ProjectTemplate = `/etc/*`
+
+	ConfigTemplate ProjectTemplate = `env: 'local'
+	http:
+	timeout:
+		unit: 'second'
+		write: '30'
+		read: '30'
+		idle: '30'
+	server: "11011"
+	`
+	VaultTemplate ProjectTemplate = `{
+        "database": {
+            "driver": "postgres | mysql",
+            "reader_dsn": "dsn",
+            "writer_dsn": "dsn"
+        }
+    }
 	`
 )
 
