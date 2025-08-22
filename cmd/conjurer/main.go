@@ -1,11 +1,17 @@
-package cmd
+package main
 
 import (
-	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/docs"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/initproject"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/migration"
 	"github.com/spf13/cobra"
 )
 
-func Conjure(args CmdArgs) {
+func main() {
+	conjure()
+}
+
+func conjure() {
 	root := &cobra.Command{
 		Use: "app",
 	}
@@ -16,7 +22,9 @@ func Conjure(args CmdArgs) {
 		Long:  "conjure a command",
 	}
 	smith.AddCommand(
-		serve.Command(args.ServeCmdArgs),
+		migration.Command(),
+		initproject.Command(),
+		docs.Command(),
 	)
 
 	root.AddCommand(

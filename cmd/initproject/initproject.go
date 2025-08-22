@@ -28,7 +28,7 @@ func checkToolsAvailibility() {
 	toolsCmds := map[string]string{
 		"swag":    "github.com/swaggo/swag/cmd/swag@latest",
 		"migrate": "installFrom;https://github.com/golang-migrate/migrate/tree/master/cmd/migrate",
-		"wire":    "installFrom;https://github.com/google/wire",
+		"wire":    "github.com/google/wire/cmd/wire@latest",
 	}
 	for key, toolCmd := range toolsCmds {
 		execCmd := exec.Command(key)
