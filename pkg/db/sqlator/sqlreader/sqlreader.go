@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"reflect"
 
+	contextlib "github.com/flazhgrowth/fg-tamagochi/pkg/context"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -17,15 +18,20 @@ type SQLReader interface {
 }
 
 type SQLReaderImpl struct {
-	actuator *sqlx.DB
+	actuator       *sqlx.DB
+	actuatorMaster *sqlx.DB
 }
 
-func New(db *sqlx.DB) SQLReader {
-	return &SQLReaderImpl{actuator: db}
+func New(db *sqlx.DB, dbMaster *sqlx.DB) SQLReader {
+	return &SQLReaderImpl{actuator: db, actuatorMaster: dbMaster}
 }
 
 func (impl *SQLReaderImpl) Get(ctx context.Context, query string, args []any, dest any) (err error) {
-	row := impl.actuator.QueryRowxContext(ctx, query, args...)
+	actuator := impl.actuator
+	if contextlib.IsUseMasterDB(ctx) {
+		actuator = impl.actuatorMaster
+	}
+	row := actuator.QueryRowxContext(ctx, query, args...)
 	destVal := reflect.ValueOf(dest)
 	if destVal.Kind() != reflect.Pointer {
 		return errDestNotPointer
@@ -45,7 +51,11 @@ func (impl *SQLReaderImpl) Get(ctx context.Context, query string, args []any, de
 }
 
 func (impl *SQLReaderImpl) Find(ctx context.Context, query string, args []any, dest any) (err error) {
-	rows, err := impl.actuator.QueryxContext(ctx, query, args...)
+	actuator := impl.actuator
+	if contextlib.IsUseMasterDB(ctx) {
+		actuator = impl.actuatorMaster
+	}
+	rows, err := actuator.QueryxContext(ctx, query, args...)
 	if err != nil {
 		return err
 	}

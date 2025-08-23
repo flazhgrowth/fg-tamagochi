@@ -24,6 +24,6 @@ func New(cfg SQLatorConfig) (SQLator, sqltx.SQLTx) {
 
 	return &SQLatorImpl{
 		writer: sqlwriter.New(writerDB),
-		reader: sqlreader.New(readerDB),
+		reader: sqlreader.New(readerDB, writerDB),
 	}, sqltx.New(writerDB)
 }

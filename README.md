@@ -16,7 +16,7 @@ go get github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@ecb138ea7a2da5cb72149581
 This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that I use direct commit hash, instead of version. Well, Tamagochi has not yet reach a stable version. Hence, the commit, instead of version.
 
 As of now, there are 3 available commands in `conjurer`:
-1. `conjurer conjure init` => use this command to instantiate a new project inside your project directory. (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp")
+1. `conjurer conjure init` => use this command to instantiate a new project inside your project directory. (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp"`)
 2. `conjurer conjure docs` => use this command if you want to generate swagger. Conjurer CLI uses [swaggo](https://github.com/swaggo/swag). Swaggo has its CLI tools called `swag`. When you use `init` command, it will try to detect if your system has `swag` already. If you have not, it will try to install `swag` to your system. (eg: `conjurer conjure docs`)
 3. `conjurer conjure migration` => use this command to do anything related to migration. Conjurer CLI uses [go-migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate). For go-migrate, Conjurer CLI will only tells you if you don't have the `migrate` CLI tool installed. Please refer to the github page on how to install the CLI tool.
 
@@ -93,11 +93,11 @@ Here, you can note a few things:
 1. Now we filled the Middlewares field with mw.GetMiddlewares(). This is how we register any middleware so later we can use it in the routes. Note that I made Tamagochi with middlewares mapping. So, GetMiddlewares function technically returns a `map[middleware.HTTPMiddleware]func(next http.Handler) http.Handler` type. Please refer to middlewares section to learn more about Tamagochi middlewares.
 2. CorsOpts field basically filled out the cors setting for the app. Again, please refer to middlewares section to learn more about Tamagochi Cors. TL;DR, it uses chi cors middleware. But you can definitely modify it and add more validation or anything. Yes, you can add more validation to your liking.
 
-### Routing
-Docs TBA
+### Routing and HTTP Handlers
+The basics of Tamagochi routing and a details on HTTP Handler on Tamagochi. Refer to [Routing and HTTP Handler Section](./projectdocs/routing.md)
 
 ### Middleware
-Docs TBA
+The basics of Tamagochi middleware, and how it differs from how chi does it. Refer to [Middleware](./projectdocs/middleware.md)
 
 ### CORS
 Docs TBA
@@ -125,4 +125,5 @@ Docs TBA, sorry, lol
 2. Docs still use method annotation like how swaggo mentioned this. Still trying to figure out how I can simplify this using router opts (will probably rename this later to something that is more intent clear on docs).
 3. Configurable logger is not yet implemented. Yeah, its gonna be zerolog.
 4. I'm thinking on implementing helper on APM. But still considering.
-5. So many other things, but yeah, I forgot lol.
+5. Gonna put go pprof middleware from chi directly as default registered middleware.
+6. So many other things, but yeah, I forgot lol.
