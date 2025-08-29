@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"github.com/flazhgrowth/fg-tamagochi/cmd/docs"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/migration"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/mocks"
 	"github.com/flazhgrowth/fg-tamagochi/cmd/serve"
 	"github.com/spf13/cobra"
 )
@@ -17,6 +20,9 @@ func Conjure(args CmdArgs) {
 	}
 	smith.AddCommand(
 		serve.Command(args.ServeCmdArgs),
+		migration.Command(),
+		docs.Command(),
+		mocks.Command(),
 	)
 
 	root.AddCommand(

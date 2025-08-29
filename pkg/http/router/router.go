@@ -29,20 +29,16 @@ type Router interface {
 	ServeDocs()
 
 	Routes() *chi.Mux
-
-	Path() string
 }
 
 type RouterImpl struct {
-	mux  *chi.Mux
-	path Path
+	mux *chi.Mux
 }
 
-func NewRouter(pattern string) Router {
+func NewRouter() Router {
 	mux := chi.NewRouter()
 	return &RouterImpl{
-		mux:  mux,
-		path: Path(pattern),
+		mux: mux,
 	}
 }
 
@@ -52,8 +48,4 @@ func (r *RouterImpl) ServeDocs() {
 
 func (r *RouterImpl) Routes() *chi.Mux {
 	return r.mux
-}
-
-func (r *RouterImpl) Path() string {
-	return string(r.path)
 }

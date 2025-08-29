@@ -4,6 +4,7 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/cmd/docs"
 	"github.com/flazhgrowth/fg-tamagochi/cmd/initproject"
 	"github.com/flazhgrowth/fg-tamagochi/cmd/migration"
+	"github.com/flazhgrowth/fg-tamagochi/cmd/mocks"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,7 @@ func conjure() {
 		migration.Command(),
 		initproject.Command(),
 		docs.Command(),
+		mocks.Command(),
 	)
 
 	root.AddCommand(

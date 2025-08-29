@@ -2,8 +2,6 @@ package initproject
 
 import (
 	"fmt"
-	"io"
-	"os"
 	"os/exec"
 	"strings"
 
@@ -278,37 +276,7 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 		log.Error().Msgf("error on running go mod tidy: %s", err.Error())
 		return
 	}
-}
-
-func copyFile(srcPath, dstPath string) error {
-	srcFile, err := os.Open(srcPath)
-	if err != nil {
-		return fmt.Errorf("failed to open source file: %w", err)
-	}
-	defer srcFile.Close()
-
-	dstFile, err := os.Create(dstPath)
-	if err != nil {
-		return fmt.Errorf("failed to create destination file: %w", err)
-	}
-	defer dstFile.Close()
-
-	_, err = io.Copy(dstFile, srcFile)
-	if err != nil {
-		return fmt.Errorf("failed to copy data: %w", err)
-	}
-
-	// Optional: Copy file permissions
-	srcInfo, err := srcFile.Stat()
-	if err != nil {
-		return fmt.Errorf("failed to stat source file: %w", err)
-	}
-	err = os.Chmod(dstPath, srcInfo.Mode())
-	if err != nil {
-		return fmt.Errorf("failed to set permissions: %w", err)
-	}
-
-	return nil
+	fmt.Println("app structure initialized")
 }
 
 func mkDir(path string) error {

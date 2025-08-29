@@ -20,7 +20,7 @@ func getRoutes(app *app.App) router.Router {
 		Driver: notiftype.DriverBrevo,
 		APIKey: "",
 	})
-	v1 := router.NewRouter("/api/v1")
+	v1 := router.NewRouter()
 	v1.Use(middleware.MIDDLEWARE_CORS)
 	v1.Get("/test", func(w response.Response, r request.Request) {
 		resp, err := notif.Send(context.Background(), notiftype.SendArgs{

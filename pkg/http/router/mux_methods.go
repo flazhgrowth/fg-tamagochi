@@ -41,14 +41,13 @@ func (r *RouterImpl) Use(handlersNames ...middleware.HTTPMiddleware) {
 }
 
 func (r *RouterImpl) Group(path string, fn func(r Router)) Router {
-	subrouter := NewRouter("")
-	if fn == nil {
-		panic("cannot group routes on nil fn")
-	}
-	fn(subrouter)
-	r.mux.Mount(path, subrouter.Routes())
-
-	return subrouter
+	r.mux.Route(path, func(chiR chi.Router) {
+		mux := &RouterImpl{
+			mux: chiR.(*chi.Mux),
+		}
+		fn(mux)
+	})
+	return r
 }
 
 func (r *RouterImpl) Scope(fn func(r Router)) {
