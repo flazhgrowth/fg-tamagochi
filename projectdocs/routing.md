@@ -17,23 +17,25 @@ type Router interface {
 
 	Options(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
 
-	Use(handlersNames ...middleware.HTTPMiddleware)
+	Use(handlersNames ...fgmw.HTTPMiddleware)
 
 	Group(pattern string, fn func(r Router)) Router
 
 	Scope(fn func(r Router))
 
+	Mount(pattern string, fn http.Handler)
+
 	ServeDocs()
 
-	Routes() *chi.Mux
+	ServeProfiler(pattern ...string)
 
-	Path() string
+	Routes() *chi.Mux
 }
 ```
 ### [1] Initializing New Router
 You can initialize new Router using the Tamagochi `github.com/flazhgrowth/fg-tamagochi/pkg/http/router` package. Take a look at below example.
 ```
-rtr := router.NewRouter("")
+rtr := router.NewRouter()
 ```
 Function `NewRouter` returns a Router interface mentioned above. Through this interface, you can use mentioned methods for routing
 
@@ -43,7 +45,7 @@ Notes: please note that `*RouterOpts` is currently for docs (which has not yet b
 The HTTPHandlerFunc from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/handler` is a `func(w response.Response, r request.Request)`
 Below is the example of how method that looks like:
 ```
-func (api *API) Lala(w response.Response, r request.Request) {
+func (api *API) Lala(r request.Request, w response.Response) {
 	ctx := r.GetContext()
 	accountInfo, err := r.GetAccountInfo()
 	if err != nil {
@@ -138,7 +140,7 @@ By default, you won't need to pass status code in here. If the data passed is no
 
 But, maybe it's a insert/create api, in which, on success, you want to return Status Code 201. This is perfectly doable using the third argument like so:
 ```
-w.Respond(data, nil, http.StatusOk)
+w.Respond(data, nil, http.StatusCreated)
 ```
 
 
@@ -195,12 +197,19 @@ Use Group when you want to group a few endpoints under its prefix pattern, like 
 parentR.Group("/resources", func(r router.Router) {
     r.Use("apikey")
     r.Post("/foo/bar", api.FooBar, nil)
+    r.Get("/foo/bezt", api.FooBezt, nil)
 })
 ```
-This will then group `/foo/bar` under `/resources` endpoint. Hence to access this API, the full endpoint would be `/resources/foo/bar`
+This will then group `/foo/bar` and `/foo/bezt` under `/resources` endpoint. Hence to access this API, the full endpoint would be `/resources/foo/bar` and `/resources/foo/bezt`.
 
 ### [10] Scope(fn func(r Router))
-Prettu much the same with Group, but instead of group a few endpoints under a prefix patter, it just scope it without any prefix patter. Useful if you don't want to use group, but you need to do something to multiple endpoints, lets say, a middleware.
+Pretty much the same with Group, but instead of group a few endpoints under a prefix pattern, it just scope it without any prefix pattern. Useful if you don't want to use group, but you need to do something to multiple endpoints, lets say, a middleware.
 
-### [11] ServeDocs()
+### [13] Mount(pattern string, fn http.Handler)
+Let's say you want to do something that a bit more native to chi, we provide Mount method that accepts pattern and native http.Handler.
+
+### [12] ServeDocs()
 If you want to serve the swagger you already annotated and generate using swaggo, then your router can just call this method. It will directly expose a `/docs` endpoint in which you can access your swagger here. For now, our only option for security is to expose this on non production environment only. Of course, you can expose this manually like how you normally do. It will also give you a better control on how you want to serve the swagger.
+
+### [13] ServeProfiler(pattern ...string)
+Use this method if you want to serve profiler (using pprof under chi middleware Profiler). By default, it will be mounted under endpoint `/healthcheck/profiler`. But if you pass a pattern on the argument, it will then mount it through the pattern passed.

@@ -39,7 +39,7 @@ func serve(cmdArgs ServeCmdArgs) {
 		CorsOpt:     cmdArgs.CorsOpts,
 	})
 
-	if err := app.DefineRoutes(cmdArgs.GetRoutesFn(app)).Run(); err != nil {
+	if err := app.SetRouter(cmdArgs.GetRoutesFn(app)).Run(); err != nil {
 		panic(err)
 	}
 }

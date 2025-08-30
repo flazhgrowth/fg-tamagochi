@@ -53,7 +53,7 @@ func New(appCfg *appconfig.AppConfig) *App {
 		},
 		{
 			Name:    fgmw.MIDDLEWARE_RECOVER_PANIC,
-			Handler: fgmw.RecoverPanicMiddleware,
+			Handler: middleware.Recoverer,
 		},
 		{
 			Name:    fgmw.MIDDLEWARE_CORS,
@@ -94,7 +94,7 @@ func (app *App) Cfg() *appconfig.AppConfig {
 	return app.appCfg
 }
 
-func (app *App) DefineRoutes(rtr router.Router) *Server {
+func (app *App) SetRouter(rtr router.Router) *Server {
 	fgmw.PrintRoutes(rtr.Routes())
 
 	return &Server{

@@ -22,7 +22,7 @@ func getRoutes(app *app.App) router.Router {
 	})
 	v1 := router.NewRouter()
 	v1.Use(middleware.MIDDLEWARE_CORS)
-	v1.Get("/test", func(w response.Response, r request.Request) {
+	v1.Get("/test", func(r request.Request, w response.Response) {
 		resp, err := notif.Send(context.Background(), notiftype.SendArgs{
 			Type:        notiftype.NotificationEmail,
 			TemplateID:  1,
@@ -41,7 +41,7 @@ func getRoutes(app *app.App) router.Router {
 		w.Respond(resp, nil)
 	}, nil)
 	v1.Group("/resources", func(usergroup router.Router) {
-		usergroup.Get("/", func(w response.Response, r request.Request) {
+		usergroup.Get("/", func(r request.Request, w response.Response) {
 			w.Respond(nil, nil)
 		}, nil)
 	})

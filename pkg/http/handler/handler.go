@@ -7,12 +7,12 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
 )
 
-type HTTPHandlerFunc func(w response.Response, r request.Request)
+type HTTPHandlerFunc func(r request.Request, w response.Response)
 
 func HandleHTTPHandler(h HTTPHandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		wHandler := response.New(w)
 		rHandler := request.New(r)
-		h(wHandler, rHandler)
+		h(rHandler, wHandler)
 	}
 }

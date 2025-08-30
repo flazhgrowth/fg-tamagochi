@@ -58,3 +58,7 @@ func (r *RouterImpl) Scope(fn func(r Router)) {
 		fn(mux)
 	})
 }
+
+func (r *RouterImpl) Mount(pattern string, fn http.Handler) {
+	r.mux.Mount(pattern, fn)
+}

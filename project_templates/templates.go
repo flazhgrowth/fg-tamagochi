@@ -27,7 +27,7 @@ func main() {
 	cmd.Conjure(cmd.CmdArgs{
 		ServeCmdArgs: serve.ServeCmdArgs{
 			GetRoutesFn: func(app *app.App) router.Router {
-				return router.NewRouter("")
+				return router.NewRouter()
 			},
 		},
 	})
