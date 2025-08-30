@@ -11,17 +11,17 @@ import (
 )
 
 type Router interface {
-	Get(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Get(pattern string, h handler.HTTPHandlerFunc)
 
-	Post(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Post(pattern string, h handler.HTTPHandlerFunc)
 
-	Put(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Put(pattern string, h handler.HTTPHandlerFunc)
 
-	Patch(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Patch(pattern string, h handler.HTTPHandlerFunc)
 
-	Delete(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Delete(pattern string, h handler.HTTPHandlerFunc)
 
-	Options(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Options(pattern string, h handler.HTTPHandlerFunc)
 
 	Use(handlersNames ...fgmw.HTTPMiddleware)
 
@@ -31,7 +31,7 @@ type Router interface {
 
 	Mount(pattern string, fn http.Handler)
 
-	ServeDocs()
+	ServeDocs(pattern ...string)
 
 	ServeProfiler(pattern ...string)
 
@@ -49,7 +49,11 @@ func NewRouter() Router {
 	}
 }
 
-func (r *RouterImpl) ServeDocs() {
+func (r *RouterImpl) ServeDocs(pattern ...string) {
+	if len(pattern) > 0 {
+		r.mux.Get(pattern[0], httpSwagger.WrapHandler)
+		return
+	}
 	r.mux.Get("/docs/*", httpSwagger.WrapHandler)
 }
 

@@ -5,17 +5,17 @@ Tamagochi utilize chi routing under the hood. But Tamagochi wraps it under its m
 Just like Chi, as we wraps chi method under its own methods, these HTTP Methods are available to use
 ```
 type Router interface {
-	Get(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Get(pattern string, h handler.HTTPHandlerFunc)
 
-	Post(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Post(pattern string, h handler.HTTPHandlerFunc)
 
-	Put(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Put(pattern string, h handler.HTTPHandlerFunc)
 
-	Patch(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Patch(pattern string, h handler.HTTPHandlerFunc)
 
-	Delete(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Delete(pattern string, h handler.HTTPHandlerFunc)
 
-	Options(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+	Options(pattern string, h handler.HTTPHandlerFunc)
 
 	Use(handlersNames ...fgmw.HTTPMiddleware)
 
@@ -33,17 +33,15 @@ type Router interface {
 }
 ```
 ### [1] Initializing New Router
-You can initialize new Router using the Tamagochi `github.com/flazhgrowth/fg-tamagochi/pkg/http/router` package. Take a look at below example.
+You can initialize a new Router using the Tamagochi `github.com/flazhgrowth/fg-tamagochi/pkg/http/router` package. Take a look at example below.
 ```
 rtr := router.NewRouter()
 ```
 Function `NewRouter` returns a Router interface mentioned above. Through this interface, you can use mentioned methods for routing
 
-Notes: please note that `*RouterOpts` is currently for docs (which has not yet been implemented. You can pass nil for this one)
-
 ### [2] handler.HTTPHandlerFunc
-The HTTPHandlerFunc from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/handler` is a `func(w response.Response, r request.Request)`
-Below is the example of how method that looks like:
+The HTTPHandlerFunc from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/handler` is a `func(r request.Request, w response.Response)`
+Below is the example of how the method implementations looks like:
 ```
 func (api *API) Lala(r request.Request, w response.Response) {
 	ctx := r.GetContext()
@@ -62,7 +60,7 @@ func (api *API) Lala(r request.Request, w response.Response) {
 }
 ```
 Explanation:
-1. **response.Response is from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/request`**
+1. **request.Request is from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/request`**
 
 As you can see. There are a few methods that you can use through `request.Request`. Here are the full interface definition of `request.Request`
 ```
@@ -114,9 +112,9 @@ You will find yourself use `GetContext`, `DecodeBody`, and `DecodeQueryParam` fr
 
 `DecodeBody` decode the body of the request into a provided struct on the second argument, while `DecodeQueryParam` decodes query param into struct in which this struct fields needs to be annotated using `schema`, unlike `DecodeBody` that needs `json` annotation on its fields.
 
-If you want to access query param, a bit more native on how we usually do it in chi, Tamagochi provide `NativeRequest` that will return `*http.Request`. By that, you can access any method it has like how we normally would. Eg:
+If you want to access query param, a bit more native on how we usually do it in chi, Tamagochi provide `NativeRequest` that will return `*http.Request` (from net/http). By that, you can access any method it has like how we normally would. Eg:
 ```
-r.NativeRequest().URL.Query().Get("key") // equivalent to r.URL.Query().Get("")
+r.NativeRequest().URL.Query().Get("key") // equivalent to r.URL.Query().Get(""), assuming that r type is *http.Request
 ```
 
 Now, we also have this `URLParamDecode`. Like query param, Tamagochi provide "decode" method for URL param. It accept struct with a bit specialized annotation on its fields. Let's take a look at the sample below
@@ -134,44 +132,44 @@ Please note that the annotation also provide `urlparamtype` with values of strin
 You can always use `URLParam`, and access it one by one (and we still recommend you to use `URLParam` like how you normally would. `URLParamDecode` uses package reflect under the hood. So it will slower regardless. By a fraction most likely, but we still need to state this.)
 
 2. **response.Response is from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/response`**
-There's not much we can do with `response.Response`. We use response to write HTTP response. If you see the above example, we use `w` (of type response.Response) method, which is `Respond`. Method `Respond` accepts 2 arguments, which is data (any) and error. But, method `Respond` also accepts ellipsis of status code as it third argument. 
+There's not much we can do with `response.Response`. We use response to write HTTP response. If you see the above example, we use `w` (of type response.Response) method, which is `Respond`. Method `Respond` accepts 3 arguments, which is data (any) and error, and status code (optional).
 
 By default, you won't need to pass status code in here. If the data passed is not nil, it will be Status Code 200 by default. If error passed, it will check if the error is an `github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors` type. If it's not, it will then use Status Code 500 by default.
 
-But, maybe it's a insert/create api, in which, on success, you want to return Status Code 201. This is perfectly doable using the third argument like so:
+But, maybe it's an insert/create api, in which, on success, you want to return Status Code 201. This is perfectly doable using the third argument like so:
 ```
 w.Respond(data, nil, http.StatusCreated)
 ```
 
 
-### [3] Method Get(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+### [3] Method Get(pattern string, h handler.HTTPHandlerFunc)
 Use this to route a GET method to an endpoint. Example:
 ```
-rtr.Get("/me", api.Me, nil)
+rtr.Get("/me", api.Me)
 ```
 
-### [4] Post(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+### [4] Post(pattern string, h handler.HTTPHandlerFunc)
 Use this to route a POST method to an endpoint. Example:
 ```
-rtr.Post("/todo", api.CreateTodo, nil)
+rtr.Post("/todo", api.CreateTodo)
 ```
 
-### [5] Put(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+### [5] Put(pattern string, h handler.HTTPHandlerFunc)
 Use this to route a PUT method to an endpoint. Example:
 ```
-rtr.Put("/todo/{id}", api.EditTodo, nil)
+rtr.Put("/todo/{id}", api.EditTodo)
 ```
 
-### [6] Patch(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+### [6] Patch(pattern string, h handler.HTTPHandlerFunc)
 Use this to route a PATCH method to an endpoint. Example:
 ```
-rtr.Patch("/todo/{id}", api.EditTodo, nil)
+rtr.Patch("/todo/{id}", api.EditTodo)
 ```
 
-### [7] Delete(pattern string, h handler.HTTPHandlerFunc, opts *RouterOpts)
+### [7] Delete(pattern string, h handler.HTTPHandlerFunc)
 Use this to route a DELETE method to an endpoint. Example:
 ```
-rtr.Patch("/todo/{id}", api.EditTodo, nil)
+rtr.Patch("/todo/{id}", api.EditTodo)
 ```
 
 ### [8] Use(handlersNames ...middleware.HTTPMiddleware)
@@ -179,15 +177,15 @@ Use this method to attach a middleware to a route
 ```
 rtr.Use(middleware.MIDDLEWARE_BASIC_BEARER_AUTH)
 ```
-There are a few things to note with `Use` method. Normally in chi, method `Use` accepts an anon function that accepts http.Handler and returns http.Handler.
+There are a few things to note with `Use` method. Normally in chi, method `Use` accepts a function that accepts http.Handler and returns http.Handler.
 
 Tamagochi wraps this and instead of directly passing the function, method `Use` in Tamagochi accepts identifier, in which the type is middleware.HTTPMiddleware (`github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware`), and the identifier is related to the handler via `map[middleware.HTTPMiddleware]func(http.Handler) http.Handler`. 
 
-This approach ensures that every every needed middleware is registered on the main `Conjure` method (usually at main.go, and we recommend you to). Tamagochi also has a few middlewares already registered beforehand. This approach also makes any middleware you created can be use using its identifier like so:
+This approach ensures that every needed middleware is registered on the main `Conjure` method (usually at `main.go`, and we recommend you to). Tamagochi also has a few middlewares already registered beforehand. This approach also makes any middleware you created can be use, using its identifier like so:
 ```
 // assuming that you already registered a new middleware called "super_printer"
 // you can use the registered middleware like so:
-rtr.Use("super_printer")
+rtr.Use("super_printer") // type middleware.HTTPMiddleware is an alias to string. In which, its perfectly okay to pass string here. But we recommend you to make a constant with type middleware.HTTPMiddleware, so you can avoid of mistyping errors.
 ```
 More of middlewares, please refer to [Middleware Section](./middleware.md)
 
@@ -208,8 +206,8 @@ Pretty much the same with Group, but instead of group a few endpoints under a pr
 ### [13] Mount(pattern string, fn http.Handler)
 Let's say you want to do something that a bit more native to chi, we provide Mount method that accepts pattern and native http.Handler.
 
-### [12] ServeDocs()
-If you want to serve the swagger you already annotated and generate using swaggo, then your router can just call this method. It will directly expose a `/docs` endpoint in which you can access your swagger here. For now, our only option for security is to expose this on non production environment only. Of course, you can expose this manually like how you normally do. It will also give you a better control on how you want to serve the swagger.
+### [12] ServeDocs(pattern ...string)
+If you want to serve the swagger you already annotated and generate using swaggo, then your router can just call this method. It will directly expose a `/docs` endpoint by default in which you can access your swagger here. But, `ServeDocs` accepts optional argument if you don't want to expose your swagger through `/docs`. For now, our only option for security is to expose this on non production environment only. Of course, you can expose this manually like how you normally do. It will also give you a better control on how you want to serve the swagger.
 
 ### [13] ServeProfiler(pattern ...string)
 Use this method if you want to serve profiler (using pprof under chi middleware Profiler). By default, it will be mounted under endpoint `/healthcheck/profiler`. But if you pass a pattern on the argument, it will then mount it through the pattern passed.

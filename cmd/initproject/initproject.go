@@ -18,11 +18,16 @@ func Command() *cobra.Command {
 		Run:   initAppStructures,
 	}
 	commands.Flags().String("packagename", "", "(go.mod) package name")
+	commands.Flags().Bool("with-wire", false, "it will install wire cli to your system if not available")
 
 	return commands
 }
 
-func checkToolsAvailibility() {
+func checkToolsAvailibility(cmd *cobra.Command) {
+	isWithWire, err := cmd.Flags().GetBool("with-wire")
+	if err != nil {
+		panic(err)
+	}
 	toolsCmds := map[string]string{
 		"swag":    "github.com/swaggo/swag/cmd/swag@latest",
 		"migrate": "installFrom;https://github.com/golang-migrate/migrate/tree/master/cmd/migrate",
@@ -30,6 +35,9 @@ func checkToolsAvailibility() {
 		"wire":    "github.com/google/wire/cmd/wire@latest",
 	}
 	for key, toolCmd := range toolsCmds {
+		if key == "wire" && !isWithWire {
+			continue
+		}
 		execCmd := exec.Command(key)
 		switch key {
 		case "migrate":
@@ -57,7 +65,7 @@ func checkToolsAvailibility() {
 
 func initAppStructures(cmd *cobra.Command, args []string) {
 	fmt.Println("checking available tools (swaggo, go migrate, wire)")
-	checkToolsAvailibility()
+	checkToolsAvailibility(cmd)
 
 	packagename, err := cmd.Flags().GetString("packagename")
 	if err != nil {

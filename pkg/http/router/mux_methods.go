@@ -8,27 +8,27 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func (r *RouterImpl) Get(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Get(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Get(path, handle(h))
 }
 
-func (r *RouterImpl) Post(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Post(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Post(path, handle(h))
 }
 
-func (r *RouterImpl) Put(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Put(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Put(path, handle(h))
 }
 
-func (r *RouterImpl) Patch(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Patch(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Patch(path, handle(h))
 }
 
-func (r *RouterImpl) Delete(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Delete(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Delete(path, handle(h))
 }
 
-func (r *RouterImpl) Options(path string, h handler.HTTPHandlerFunc, opts *RouterOpts) {
+func (r *RouterImpl) Options(path string, h handler.HTTPHandlerFunc) {
 	r.mux.Options(path, handle(h))
 }
 
