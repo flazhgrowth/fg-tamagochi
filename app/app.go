@@ -46,6 +46,7 @@ func New(appCfg *appconfig.AppConfig) *App {
 		}
 	}
 
+	// default middlewares registered by fg-tamagochi
 	mws := []fgmw.RegisterMiddlewaresArg{
 		{
 			Name:    fgmw.MIDDLEWARE_BASIC_BEARER_AUTH,
@@ -71,8 +72,12 @@ func New(appCfg *appconfig.AppConfig) *App {
 			Name:    fgmw.MIDDLEWARE_LOGGER,
 			Handler: middleware.Logger,
 		},
+		{
+			Name:    fgmw.MIDDLEWARE_BASIC_API_KEY,
+			Handler: fgmw.BasicAPIKeyMiddleware,
+		},
 	}
-	// register middlewares
+	// register additional middlewares defined by user
 	if len(appCfg.Middlewares) > 0 {
 		for key, mw := range appCfg.Middlewares {
 			mws = append(mws, fgmw.RegisterMiddlewaresArg{
