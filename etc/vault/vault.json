@@ -3,5 +3,11 @@
         "driver": "postgres",
         "reader_dsn": "",
         "writer_dsn": ""
+    },
+    "cache": {
+        "host": "localhost",
+        "port": "6379",
+        "db": 0,
+        "password": ""
     }
 }

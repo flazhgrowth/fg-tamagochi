@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/flazhgrowth/fg-tamagochi/appconfig"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/cache"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
 	fgmw "github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
@@ -18,9 +20,14 @@ type App struct {
 	appCfg    *appconfig.AppConfig
 	sqlator   sqlator.SQLator
 	txsqlator sqltx.SQLTx
+	cache     cache.Cache
 }
 
 func New(appCfg *appconfig.AppConfig) *App {
+	// initialize configs, vault, and featureflags
+	if err := config.New(); err != nil {
+		panic(fmt.Sprintf("error initializing configs: %s", err.Error()))
+	}
 	if err := vault.New(); err != nil {
 		panic(fmt.Sprintf("error initializing vaults: %s", err.Error()))
 	}
@@ -88,10 +95,16 @@ func New(appCfg *appconfig.AppConfig) *App {
 	}
 	fgmw.RegisterMiddlewares(mws...)
 
+	var cacheClient cache.Cache
+	if appCfg.UseCache {
+		cacheClient = cache.New(cache.CacheConfig{})
+	}
+
 	return &App{
 		appCfg:    appCfg,
 		sqlator:   sqlator,
 		txsqlator: txsqlator,
+		cache:     cacheClient,
 	}
 }
 

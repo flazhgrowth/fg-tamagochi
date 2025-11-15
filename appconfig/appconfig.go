@@ -12,6 +12,7 @@ type (
 		HTTPServer  HTTPServerConfig
 		Middlewares map[middleware.HTTPMiddleware]func(next http.Handler) http.Handler
 		CorsOpt     *middleware.CorsOpt
+		UseCache    bool
 	}
 
 	HTTPServerConfig struct {

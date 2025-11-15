@@ -1,6 +1,7 @@
 package apierrors
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -19,7 +20,10 @@ func (lw LogPath) With(postfix string) LogPath {
 }
 
 // LogError logs error using zerolog log.Error.Msgf()
-func (lw LogPath) LogError(err error) {
-	lw = LogPath(fmt.Sprintf("%s:%s", lw, err.Error()))
-	log.Error().Msgf(string(lw))
+func (lw LogPath) LogError(ctx context.Context, msg string, err error) {
+	log.Error().
+		Ctx(ctx).
+		Err(err).
+		Str("path", string(lw)).
+		Msg(msg)
 }

@@ -12,17 +12,27 @@ var (
 )
 
 const (
-	SecBearerAuth SecAuth = "bearer"
-	SecAPIKey     SecAuth = "apikey"
+	SecurityBearerAuth SecAuth = "bearer"
+	SecurityAPIKey     SecAuth = "apikey"
 )
 
 type (
 	Path       string
 	SecAuth    string
-	RouterOpts struct {
-		Security SecAuth
+	RouterDocs struct {
+		Security     SecAuth
+		Request      any
+		Response     any
+		IsDeprecated bool
+		Tags         string
+		Summary      string
+		Description  string
 	}
 )
+
+func (sec SecAuth) IsPublic() bool {
+	return string(sec) == ""
+}
 
 func (p Path) EndsWith(path string) string {
 	if !strings.HasPrefix(path, "/") {

@@ -54,11 +54,11 @@ type Request interface {
 	// URLParam gets url param value based on given key
 	URLParam(key string) ParamsValue
 
-	// URLParamDecode decode url param into struct with tag of urlparam and urlparamtype for its type
+	// DecodeURLParam decode url param into struct with tag of urlparam and urlparamtype for its type
 	/*
 		Please note that, it is still recommended to use URLParam method instead of using URLParamDecode, due to efficiency
 	*/
-	URLParamDecode(dest any) error
+	DecodeURLParam(dest any) error
 }
 
 func New(r *http.Request) Request {

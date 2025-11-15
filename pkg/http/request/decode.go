@@ -6,18 +6,19 @@ import (
 	"io"
 	"reflect"
 
+	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 	"github.com/gorilla/schema"
 )
 
 func (req *RequestImpl) DecodeBody(dest any) error {
 	b, err := io.ReadAll(req.Body)
-	defer req.Body.Close()
 	if err != nil {
-		return err
+		return apierrors.ErrorBadRequest("invalid request body")
 	}
+	defer req.Body.Close()
 
 	if err = json.Unmarshal(b, dest); err != nil {
-		return err
+		return apierrors.ErrorBadRequest("invalid request body")
 	}
 
 	return nil
@@ -28,13 +29,13 @@ func (req *RequestImpl) DecodeQueryParam(dest any) error {
 	decoder.IgnoreUnknownKeys(true)
 
 	if err := decoder.Decode(dest, req.URL.Query()); err != nil {
-		return err
+		return apierrors.ErrorBadRequest("invalid query params")
 	}
 
 	return nil
 }
 
-func (req *RequestImpl) URLParamDecode(dest any) error {
+func (req *RequestImpl) DecodeURLParam(dest any) error {
 	v := reflect.ValueOf(dest)
 	if v.Kind() != reflect.Ptr || v.Elem().Kind() != reflect.Struct {
 		return fmt.Errorf("tags: dest must be a pointer to struct")

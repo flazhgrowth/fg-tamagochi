@@ -29,7 +29,6 @@ func checkToolsAvailibility(cmd *cobra.Command) {
 		panic(err)
 	}
 	toolsCmds := map[string]string{
-		"swag":    "github.com/swaggo/swag/cmd/swag@latest",
 		"migrate": "installFrom;https://github.com/golang-migrate/migrate/tree/master/cmd/migrate",
 		"mockery": "installFrom;https://vektra.github.io/mockery/latest/installation/",
 		"wire":    "github.com/google/wire/cmd/wire@latest",

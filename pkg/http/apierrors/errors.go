@@ -13,3 +13,9 @@ type HTTPError struct {
 func (e HTTPError) Error() string {
 	return fmt.Sprintf("%s-%s", e.Code, e.Message)
 }
+
+func (e *HTTPError) WithCode(strCode string) HTTPError {
+	e.Code = strCode
+
+	return *e
+}

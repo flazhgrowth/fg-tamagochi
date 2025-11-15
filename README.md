@@ -11,17 +11,16 @@ Think of Conjurer as the main tools to do anything that related to a project, wh
 
 Hence, to install Conjurer CLI, use the command below:
 ```
-go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.0.2
+go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.1.0
 ```
 This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that we use Tamagochi has not yet reach a stable version.
 
 As of now, there are 4 available commands in `conjurer`:
 1. `conjurer conjure init` => use this command to instantiate a new project inside your project directory. (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp"`)
-2. `conjurer conjure docs` => use this command if you want to generate swagger. Conjurer CLI uses [swaggo](https://github.com/swaggo/swag). Swaggo has its CLI tools called `swag`. When you use `init` command, it will try to detect if your system has `swag` already. If you have not, it will try to install `swag` to your system. (eg: `conjurer conjure docs`)
-3. `conjurer conjure mocks` => use this command to generate mocks. Conjurer CLI uses [mockery](https://vektra.github.io/mockery/latest/installation/). When you use `init` command, it will try to detect if your system has `mockery` already. If you have not, it will then try to install `mockery` to you system. (eg: `conjurer conjure mocks`)
-4. `conjurer conjure migration` => use this command to do anything related to migration. Conjurer CLI uses [go-migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate). For go-migrate, Conjurer CLI will only tells you if you don't have the `migrate` CLI tool installed. Please refer to the github page on how to install the CLI tool.
+2. `conjurer conjure mocks` => use this command to generate mocks. Conjurer CLI uses [mockery](https://vektra.github.io/mockery/latest/installation/). When you use `init` command, it will try to detect if your system has `mockery` already. If you have not, it will then try to install `mockery` to you system. (eg: `conjurer conjure mocks`)
+3. `conjurer conjure migration` => use this command to do anything related to migration. Conjurer CLI uses [go-migrate](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate). For go-migrate, Conjurer CLI will only tells you if you don't have the `migrate` CLI tool installed. Please refer to the github page on how to install the CLI tool.
 
-NB: command `init` also accept argument `with-wire` (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp" --with-wire`). This will also install [wire cli](github.com/google/wire/cmd/wire@latest). Wire can be use to ease up the process of wiring dependencies across your project (please refer to the github/docs om how to use wire if you prefer to use wire). For now, Tamagochi only provide `wire`. No other DI wiring tools planned for Tamagochi (like UberFx). I'm sorry, lol.
+NB: command `init` also accept argument `with-wire` (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp" --with-wire`). This will also install [wire cli](github.com/google/wire/cmd/wire@latest). Wire can be use to ease up the process of wiring dependencies across your project (please refer to the github/docs on how to use wire if you prefer to use wire). For now, Tamagochi only provide `wire`. No other DI wiring tools planned for Tamagochi (like UberFx).
 
 Under the hood, command `init` prepares the basic or the bare minimum to run an app. The provided argument `packagename` when you run `init` command is used to `go mod init` the project. Command `init` will also do `go mod tidy` due to the nature Tamagochi `init` command is templating, hence any used dependecies in Tamagochi, needs to be installed beforehands.
 
@@ -101,13 +100,10 @@ The basics of Tamagochi routing and a details on HTTP Handler on Tamagochi. Refe
 The basics of Tamagochi middleware, and how it differs from how chi does it. Refer to [Middleware](./projectdocs/middleware.md)
 
 ### CORS
-Docs TBA
-
-### Notification (Email)
-Docs TBA
+The basic of Tamagochi CORS. Refer to [CORS](./projectdocs/cors.md)
 
 ### Cache
-Docs TBA
+The basic of Tamagochi cache. Refer to [Cache](./projectdocs/cache.md)
 
 ### Config and Vault
 Docs TBA
@@ -123,8 +119,6 @@ Docs TBA, sorry, lol
 
 ## Current Limitations
 1. Currently, only postgres database driver supported. Man, I'm sorry lol. 
-2. Docs still use method annotation like how swaggo mentioned this. Still trying to figure out how we can simplify this using router opts (will probably rename this later to something that is more intent clear on docs).
-3. Configurable logger is not yet implemented. Yeah, its gonna be zerolog.
-4. I'm thinking on implementing helper on APM. But still considering.
-5. Gonna put go pprof middleware from chi directly as default registered middleware.
-6. So many other things, but yeah, we forgot lol.
+2. Configurable logger is not yet implemented. Yeah, its gonna be zerolog.
+3. I'm thinking on implementing helper on APM. But still considering.
+4. So many other things, but yeah, we forgot lol.

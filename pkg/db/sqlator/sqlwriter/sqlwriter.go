@@ -13,12 +13,20 @@ type SQLWriter interface {
 	// Write does destructive operations, where it can be insert, update, or delete data.
 	/*
 		The method itself is pretty general, so it accepts query and args. This method can be reference as example to standardize the codebase itself.
+		Notes:
+			Write by default checks from context if there are any db transaction exists on the context.
+			If db transaction exists, it will use that db transaction and refrain to commit/rollback inside the method.
+			If, no db transaction found, it will generate new db transaction and commit/rollback once the method completed.
 	*/
 	Write(ctx context.Context, query string, args []any) (lastInsertedID int64, err error)
 
 	// Insert does destructive operations on inserting new data to the database
 	/*
-		Use this method if you need the id created. Last argument of the method is the pointer to the id variable
+		Use this method if you need the id created. Last argument of the method is the pointer to the id variable / id field of a struct
+		Notes:
+			Insert also, by default checks from context if there are any db transaction exists on the context.
+			If db transaction exists, it will use that db transaction and refrain to commit/rollback inside the method.
+			If, no db transaction found, it will generate new db transaction and commit/rollback once the method completed.
 	*/
 	Insert(ctx context.Context, query string, args []any, dest any) (err error)
 }
