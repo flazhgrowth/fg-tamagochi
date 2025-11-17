@@ -24,9 +24,21 @@ type Request interface {
 	GetContext() context.Context
 
 	// DecodeBody decode body bytes to struct. The argument of this method accepts struct pointer
+	/*
+		Any error returned from this method will return apierrors.HTTPError type, in which the struct
+		already implement the Error() string method, so it already fulfilled error interface.
+
+		This also indicates that there's no need to return apierrors on api layer
+	*/
 	DecodeBody(dest any) error
 
 	// DecodeQueryParam decode request param to struct. The argument of this method accepts struct pointer
+	/*
+		Any error returned from this method will return apierrors.HTTPError type, in which the struct
+		already implement the Error() string method, so it already fulfilled error interface.
+
+		This also indicates that there's no need to return apierrors on api layer
+	*/
 	DecodeQueryParam(dest any) error
 
 	// GeneralHeaders gets general headers. This includes Host, UserAgent, Accept, AcceptEncoding, Referer, Connection
@@ -54,9 +66,14 @@ type Request interface {
 	// URLParam gets url param value based on given key
 	URLParam(key string) ParamsValue
 
-	// DecodeURLParam decode url param into struct with tag of urlparam and urlparamtype for its type
+	// DecodeURLParam decode url param into struct with tag of path and pathtype for its type
 	/*
-		Please note that, it is still recommended to use URLParam method instead of using URLParamDecode, due to efficiency
+		Any error returned from this method will return apierrors.HTTPError type, in which the struct
+		already implement the Error() string method, so it already fulfilled error interface.
+
+		This also indicates that there's no need to return apierrors on api layer.
+
+		Please note that, it is still recommended to use URLParam method instead of using DecodeURLParam, due to efficiency.
 	*/
 	DecodeURLParam(dest any) error
 }

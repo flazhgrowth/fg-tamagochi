@@ -99,11 +99,11 @@ type Request interface {
     // URLParam gets url param value based on given key
     URLParam(key string) ParamsValue
 
-    // URLParamDecode decode url param into struct with tag of urlparam and urlparamtype for its type
+    // DecodeURLParam decode url param into struct with tag of path and pathtype for its type
     /*
         Please note that, it is still recommended to use URLParam method instead of using URLParamDecode, due to efficiency
     */
-    URLParamDecode(dest any) error
+    DecodeURLParam(dest any) error
 }
 ```
 You will find yourself use `GetContext`, `DecodeBody`, and `DecodeQueryParam` frequently. 
@@ -120,16 +120,16 @@ r.NativeRequest().URL.Query().Get("key") // equivalent to r.URL.Query().Get(""),
 Now, we also have this `DecodeURLParam`. Like query param, Tamagochi provide "decode" method for URL param. It accept struct with a bit specialized annotation on its fields. Let's take a look at the sample below
 ```
 AmazingStruct struct {
-    Name            string `urlparam:"name" urlparamtype:"string"`
-    SomeNumber      string `urlparam:"some_number" urlparamtype:"number"`
-    SomeBoolean     bool   `urlparam:"some_boolean" urlparamtype:"bool"`
+    Name            string `path:"name" pathtype:"string"`
+    SomeNumber      string `path:"some_number" pathtype:"number"`
+    SomeBoolean     bool   `path:"some_boolean" pathtype:"bool"`
 }
 ```
 By this example, we assume you have a route that basically looks like this (eg: /api/v1/name/{name}/numba/{some_numba}/{some_boolean}).
 
-Please note that the annotation also provide `urlparamtype` with values of string, number, and bool. Besides string and bool that are pretty straighforward, number will cast the value into int64. We recommend fraction value to be annotated using string, and you manually cast it yourself to your desired destination type.
+Please note that the annotation also provide `pathtype` with values of string, number, and bool. Besides string and bool that are pretty straighforward, number will cast the value into int64. We recommend fraction value to be annotated using string, and you manually cast it yourself to your desired destination type.
 
-You can always use `URLParam`, and access it one by one (and we still recommend you to use `URLParam` like how you normally would. `URLParamDecode` uses package reflect under the hood. So it will slower regardless. By a fraction most likely, but we still need to state this.)
+You can always use `URLParam`, and access it one by one (and we still recommend you to use `URLParam` like how you normally would. `DecodeURLParam` uses package reflect under the hood. So it will slower regardless. By a fraction most likely, but we still need to state this.)
 
 2. **response.Response is from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/response`**
 There's not much we can do with `response.Response`. We use response to write HTTP response. If you see the above example, we use `w` (of type response.Response) method, which is `Respond`. Method `Respond` accepts 3 arguments, which is data (any) and error, and status code (optional).

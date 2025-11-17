@@ -2,7 +2,6 @@ package request
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"reflect"
 
@@ -38,7 +37,7 @@ func (req *RequestImpl) DecodeQueryParam(dest any) error {
 func (req *RequestImpl) DecodeURLParam(dest any) error {
 	v := reflect.ValueOf(dest)
 	if v.Kind() != reflect.Ptr || v.Elem().Kind() != reflect.Struct {
-		return fmt.Errorf("tags: dest must be a pointer to struct")
+		return apierrors.ErrorInternalServerError("tags: dest must be a pointer to struct")
 	}
 
 	typ := reflect.TypeOf(dest).Elem()
@@ -50,8 +49,8 @@ func (req *RequestImpl) DecodeURLParam(dest any) error {
 			continue
 		}
 
-		tag := field.Tag.Get("urlparam")
-		typetag := field.Tag.Get("urlparamtype")
+		tag := field.Tag.Get("path")
+		typetag := field.Tag.Get("pathtype")
 		paramVal := req.URLParam(tag)
 		switch typetag {
 		case "number":

@@ -26,14 +26,19 @@ func (r *RouterImpl) handleDocs(method string, path string, docs RouterDocs) {
 			Data: docs.Response,
 		})
 	}
-	if !docs.Security.IsPublic() {
-		ops.AddSecurity(string(docs.Security))
+	if !docs.Security.isPublic() {
+		for _, sec := range docs.Security {
+			if sec.isPublic() {
+				continue
+			}
+			ops.AddSecurity(string(sec))
+		}
 	}
 	if docs.IsDeprecated {
 		ops.SetIsDeprecated(true)
 	}
 	ops.SetTags(docs.Tags)
-	ops.SetSummary(docs.Summary)
+	ops.SetSummary(docs.Title)
 	ops.SetDescription(docs.Description)
 
 	if err = r.openapireflector.AddOperation(ops); err != nil {

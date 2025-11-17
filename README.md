@@ -4,14 +4,14 @@ Honestly, a rather simple wrapper around the amazing [go-chi](https://github.com
 The main idea would be, how to get started, fast, using go-chi, with a few commands up on its sleeves.
 
 ## Requirements
-1. Golang (version 1.21 or later)
+1. Golang (version 1.23 or later)
 
 ## Install Conjurer CLI
 Think of Conjurer as the main tools to do anything that related to a project, whether it is to initiate a project, make docs, and run migrations (well, currently the available commands on Conjurer are the three mentioned before).
 
 Hence, to install Conjurer CLI, use the command below:
 ```
-go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.1.0
+go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.1.1
 ```
 This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that we use Tamagochi has not yet reach a stable version.
 
@@ -105,13 +105,13 @@ The basic of Tamagochi CORS. Refer to [CORS](./projectdocs/cors.md)
 ### Cache
 The basic of Tamagochi cache. Refer to [Cache](./projectdocs/cache.md)
 
-### Config and Vault
+### Config, Vault, and Featureflag
 Docs TBA
 
 ### Database and SQLator
 Docs TBA
 
-### HTTP Handler Transport (what you can do, and how we recommend you to use utilize this)
+### HTTP Handler Transport (what you can do, and how we recommend you to utilize this)
 Docs TBA
 
 ### (I WON'T FORCE, BUT PLEASE CONSIDER LMAO) How Tamagochi structure its project

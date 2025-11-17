@@ -19,19 +19,24 @@ const (
 type (
 	Path       string
 	SecAuth    string
+	SecAuths   []SecAuth
 	RouterDocs struct {
-		Security     SecAuth
+		Security     SecAuths
 		Request      any
 		Response     any
 		IsDeprecated bool
 		Tags         string
-		Summary      string
+		Title        string
 		Description  string
 	}
 )
 
-func (sec SecAuth) IsPublic() bool {
+func (sec SecAuth) isPublic() bool {
 	return string(sec) == ""
+}
+
+func (sec SecAuths) isPublic() bool {
+	return len(sec) == 0
 }
 
 func (p Path) EndsWith(path string) string {
