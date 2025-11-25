@@ -7,9 +7,9 @@ import (
 	"os"
 
 	"github.com/MarceloPetrucio/go-scalar-api-reference"
-	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/handler"
 	fgmw "github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/logger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/swaggest/openapi-go"
@@ -81,11 +81,11 @@ func (r *RouterImpl) ServeDocs(pattern ...string) {
 	// save specs
 	specJsonByte, err := r.openapireflector.Spec.MarshalJSON()
 	if err != nil {
-		apierrors.LogPath("openapi spec marshaller").LogError(context.Background(), "error on marshalling openapi spec", err)
+		logger.LogPath("openapi spec marshaller").LogError(context.Background(), "error on marshalling openapi spec", err)
 		return
 	}
 	if err = os.WriteFile("./docs/swagger.json", specJsonByte, 0644); err != nil {
-		apierrors.LogPath("openapi spec writer failed").LogError(context.Background(), "error on writing openapi spec file", err)
+		logger.LogPath("openapi spec writer failed").LogError(context.Background(), "error on writing openapi spec file", err)
 	}
 
 	r.mux.Get(ptrn, func(w http.ResponseWriter, r *http.Request) {

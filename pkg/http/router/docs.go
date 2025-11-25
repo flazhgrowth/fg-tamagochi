@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/logger"
 )
 
 func (r *RouterImpl) handleDocs(method string, path string, docs RouterDocs) {
@@ -16,7 +16,7 @@ func (r *RouterImpl) handleDocs(method string, path string, docs RouterDocs) {
 	}
 	ops, err := r.openapireflector.NewOperationContext(method, endpoint)
 	if err != nil {
-		apierrors.LogPath("handleDocs").LogError(context.Background(), "failed on instantiate NewOperationContext", err)
+		logger.LogPath("handleDocs").LogError(context.Background(), "failed on instantiate NewOperationContext", err)
 	}
 	if path != http.MethodDelete && docs.Request != nil {
 		ops.AddReqStructure(docs.Request)
@@ -42,6 +42,6 @@ func (r *RouterImpl) handleDocs(method string, path string, docs RouterDocs) {
 	ops.SetDescription(docs.Description)
 
 	if err = r.openapireflector.AddOperation(ops); err != nil {
-		apierrors.LogPath("openapireflector.AddOperation").LogError(context.Background(), "failed on adding operation", err)
+		logger.LogPath("openapireflector.AddOperation").LogError(context.Background(), "failed on adding operation", err)
 	}
 }
