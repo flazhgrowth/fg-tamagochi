@@ -122,6 +122,8 @@ http:
 		"writer_dsn": "dsn"
 	}
 }`
+	FeatureflagTemplate ProjectTemplate = `
+	example_feature_enabled: true`
 )
 
 func (templ ProjectTemplate) WriteTo(path string, binding map[string]any) error {

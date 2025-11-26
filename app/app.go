@@ -9,6 +9,7 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/featureflag"
 	fgmw "github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/router"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
@@ -30,6 +31,9 @@ func New(appCfg *appconfig.AppConfig) *App {
 	}
 	if err := vault.New(); err != nil {
 		panic(fmt.Sprintf("error initializing vaults: %s", err.Error()))
+	}
+	if err := featureflag.New(); err != nil {
+		panic(fmt.Sprintf("error initializing featureflags: %s", err.Error()))
 	}
 
 	// init db
@@ -81,7 +85,7 @@ func New(appCfg *appconfig.AppConfig) *App {
 		},
 		{
 			Name:    fgmw.MIDDLEWARE_BASIC_API_KEY,
-			Handler: fgmw.BasicAPIKeyMiddleware,
+			Handler: fgmw.BasicAPIKeyMiddleware("X-API-Key"),
 		},
 	}
 	// register additional middlewares defined by user

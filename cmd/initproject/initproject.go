@@ -63,7 +63,7 @@ func checkToolsAvailibility(cmd *cobra.Command) {
 }
 
 func initAppStructures(cmd *cobra.Command, args []string) {
-	fmt.Println("checking available tools (swaggo, go migrate, wire)")
+	fmt.Println("checking available tools")
 	checkToolsAvailibility(cmd)
 
 	packagename, err := cmd.Flags().GetString("packagename")
@@ -81,6 +81,7 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 	mkDir("./etc")
 	mkDir("./etc/config")
 	mkDir("./etc/vault")
+	mkDir("./etc/featureflag")
 
 	defaultEntities := map[string]entity.ProjectSchema{
 		"account": {
@@ -124,6 +125,11 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 
 	if err := projecttemplates.VaultTemplate.WriteTo("./etc/vault/vault.json", nil); err != nil {
 		log.Error().Msgf("error on creating etc/vault/vault.json from template: %s", err.Error())
+		return
+	}
+
+	if err := projecttemplates.FeatureflagTemplate.WriteTo("./etc/featureflag/featureflag.yaml", nil); err != nil {
+		log.Error().Msgf("error on creating etc/featureflag/featureflag.yaml from template: %s", err.Error())
 		return
 	}
 
