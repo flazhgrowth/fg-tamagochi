@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/flazhgrowth/fg-tamagochi/pkg/config"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/driver"
 	"github.com/spf13/viper"
 )
 
@@ -19,9 +20,9 @@ type Vault struct {
 
 type (
 	DatabaseVault struct {
-		Driver    string `json:"driver"`
-		WriterDSN string `json:"writer_dsn"`
-		ReaderDSN string `json:"reader_dsn"`
+		Driver    driver.Driver `json:"driver"`
+		WriterDSN string        `json:"writer_dsn"`
+		ReaderDSN string        `json:"reader_dsn"`
 	}
 )
 

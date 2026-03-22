@@ -26,11 +26,11 @@ type App struct {
 
 func New(appCfg *appconfig.AppConfig) *App {
 	// initialize configs, vault, and featureflags
-	if err := config.New(); err != nil {
-		panic(fmt.Sprintf("error initializing configs: %s", err.Error()))
-	}
 	if err := vault.New(); err != nil {
 		panic(fmt.Sprintf("error initializing vaults: %s", err.Error()))
+	}
+	if err := config.New(); err != nil {
+		panic(fmt.Sprintf("error initializing configs: %s", err.Error()))
 	}
 	if err := featureflag.New(); err != nil {
 		panic(fmt.Sprintf("error initializing featureflags: %s", err.Error()))
@@ -38,7 +38,7 @@ func New(appCfg *appconfig.AppConfig) *App {
 
 	// init db
 	sqlator, txsqlator := sqlator.New(sqlator.SQLatorConfig{
-		Driver:    vault.GetVault().Database.Driver,
+		Driver:    string(vault.GetVault().Database.Driver),
 		WriterDSN: vault.GetVault().Database.WriterDSN,
 		ReaderDSN: vault.GetVault().Database.ReaderDSN,
 	})

@@ -6,7 +6,7 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/constant"
 )
 
-func (impl *SQLTxImpl) Begin(ctx context.Context) (context.Context, error) {
+func (impl *tx) Begin(ctx context.Context) (context.Context, error) {
 	tx, err := impl.actuator.BeginTxx(ctx, nil)
 	if err != nil {
 		return ctx, err

@@ -12,7 +12,6 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/request"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
-	"github.com/rs/zerolog/log"
 )
 
 // BasicBearerAuthMiddleware
@@ -33,12 +32,10 @@ func BasicBearerAuthMiddleware(next http.Handler) http.Handler {
 		token := jwt.NewJWT()
 		claims, err := token.ValidateToken(secHeaders.Authorization, vault.GetVault().GetStringWithDefault("tokens.secret", ""))
 		if err != nil {
-			log.Error().Msgf("auth-middleware: %s", err.Error())
 			resp.Respond(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
 			return
 		}
 		if claims.ExpiresAt.Before(time.Now()) || claims.ID == "" {
-			log.Error().Msgf("auth-middleware: claims.ExpiresAt.Before(time.Now()) = %v", claims.ExpiresAt.Before(time.Now()))
 			resp.Respond(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
 			return
 		}

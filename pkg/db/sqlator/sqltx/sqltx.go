@@ -16,12 +16,12 @@ type SQLTx interface {
 	Finish(ctx context.Context, err *error)
 }
 
-type SQLTxImpl struct {
+type tx struct {
 	actuator *sqlx.DB
 }
 
 func New(db *sqlx.DB) SQLTx {
-	return &SQLTxImpl{
+	return &tx{
 		actuator: db,
 	}
 }

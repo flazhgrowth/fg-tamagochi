@@ -9,16 +9,16 @@
 The main idea would be, how to get started, fast, using go-chi, with a few commands up on its sleeves.
 
 ## Requirements
-1. Golang (version 1.23 or later)
+1. Golang (version 1.26 or later)
 
 ## Install Conjurer CLI
 Think of Conjurer as the main tools to do anything that related to a project, whether it is to initiate a project, make mocks, and run migrations (well, currently the available commands on Conjurer are the three mentioned before).
 
 Hence, to install Conjurer CLI, use the command below:
 ```
-go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.1.1
+go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.2.0
 ```
-This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that we use Tamagochi has not yet reach a stable version.
+This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that Tamagochi has not yet reach a stable version.
 
 As of now, there are 3 available commands in `conjurer`:
 1. `conjurer conjure init` => use this command to instantiate a new project inside your project directory. (eg: `conjurer conjure init --packagename="github.com/flazhgrowth/supertesterapp"`)
