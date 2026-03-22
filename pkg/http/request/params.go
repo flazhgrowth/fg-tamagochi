@@ -23,3 +23,11 @@ func (params ParamsValue) Bool() (bool, error) {
 func (req *RequestImpl) URLParam(key string) ParamsValue {
 	return ParamsValue(chi.URLParam(req.Request, key))
 }
+
+func (params ParamsValue) Uint64() (uint64, error) {
+	return strconv.ParseUint(string(params), 10, 64)
+}
+
+func (params ParamsValue) Float64() (float64, error) {
+	return strconv.ParseFloat(string(params), 64)
+}

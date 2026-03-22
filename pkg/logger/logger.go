@@ -7,7 +7,10 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-type LogPath string
+type (
+	LogPath string
+	LogMeta map[string]any
+)
 
 // With extends the LogPath value with given postfix
 /*
@@ -19,7 +22,7 @@ func (lw LogPath) With(postfix string) LogPath {
 	return LogPath(fmt.Sprintf("%s.%s", lw, postfix))
 }
 
-func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata ...map[string]any) {
+func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata ...LogMeta) {
 	e := log.Error().
 		Ctx(ctx).
 		Err(err).
@@ -33,7 +36,7 @@ func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata .
 	e.Msg(msg)
 }
 
-func (lw LogPath) LogDebug(ctx context.Context, msg string, logdata ...map[string]any) {
+func (lw LogPath) LogDebug(ctx context.Context, msg string, logdata ...LogMeta) {
 	e := log.Debug().
 		Ctx(ctx).
 		Str("path", string(lw))
@@ -46,7 +49,7 @@ func (lw LogPath) LogDebug(ctx context.Context, msg string, logdata ...map[strin
 	e.Msg(msg)
 }
 
-func (lw LogPath) LogInfo(ctx context.Context, msg string, logdata ...map[string]any) {
+func (lw LogPath) LogInfo(ctx context.Context, msg string, logdata ...LogMeta) {
 	e := log.Info().
 		Ctx(ctx).
 		Str("path", string(lw))
@@ -59,7 +62,7 @@ func (lw LogPath) LogInfo(ctx context.Context, msg string, logdata ...map[string
 	e.Msg(msg)
 }
 
-func (lw LogPath) LogFatal(ctx context.Context, msg string, err error, logdata ...map[string]any) {
+func (lw LogPath) LogFatal(ctx context.Context, msg string, err error, logdata ...LogMeta) {
 	e := log.Fatal().
 		Ctx(ctx).
 		Str("path", string(lw))

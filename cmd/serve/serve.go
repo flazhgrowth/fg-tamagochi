@@ -26,7 +26,13 @@ func serve(cmdArgs ServeCmdArgs) {
 		panic(fmt.Sprintf("error initializing configs: %s", err.Error()))
 	}
 	app := app.New(&appconfig.AppConfig{
-		HTTPServer: appconfig.HTTPServerConfig{
+		Middlewares: cmdArgs.Middlewares,
+		CorsOpt:     cmdArgs.CorsOpts,
+	})
+
+	if err := app.
+		SetRouter(cmdArgs.GetRoutesFn(app)).
+		Run(appconfig.HTTPServerConfig{
 			Timeout: appconfig.HTTPServerTimeoutConfig{
 				WriteTimeout: appconfig.Timeout(config.GetConfig().GetInt64WithDefault("http.timeout.write", 10)),
 				ReadTimeout:  appconfig.Timeout(config.GetConfig().GetInt64WithDefault("http.timeout.read", 10)),
@@ -34,12 +40,7 @@ func serve(cmdArgs ServeCmdArgs) {
 				Unit:         config.GetConfig().GetStringWithDefault("http.timeout.unit", "second"),
 			},
 			Server: config.GetConfig().GetStringWithDefault("http.server", ":8000"),
-		},
-		Middlewares: cmdArgs.Middlewares,
-		CorsOpt:     cmdArgs.CorsOpts,
-	})
-
-	if err := app.SetRouter(cmdArgs.GetRoutesFn(app)).Run(); err != nil {
+		}); err != nil {
 		panic(err)
 	}
 }

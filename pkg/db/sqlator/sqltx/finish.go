@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func (impl *SQLTxImpl) Finish(ctx context.Context, err *error) {
+func (impl *tx) Finish(ctx context.Context, err *error) {
 	tx := ctx.Value(constant.CtxKeyDBTx).(*sqlx.Tx)
 	finishTx(tx, err)
 }

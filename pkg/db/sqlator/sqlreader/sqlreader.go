@@ -17,16 +17,16 @@ type SQLReader interface {
 	Find(ctx context.Context, query string, args []any, dest any) (err error)
 }
 
-type SQLReaderImpl struct {
+type reader struct {
 	actuator       *sqlx.DB
 	actuatorMaster *sqlx.DB
 }
 
 func New(db *sqlx.DB, dbMaster *sqlx.DB) SQLReader {
-	return &SQLReaderImpl{actuator: db, actuatorMaster: dbMaster}
+	return &reader{actuator: db, actuatorMaster: dbMaster}
 }
 
-func (impl *SQLReaderImpl) Get(ctx context.Context, query string, args []any, dest any) (err error) {
+func (impl *reader) Get(ctx context.Context, query string, args []any, dest any) (err error) {
 	actuator := impl.actuator
 	if contextlib.IsUseMasterDB(ctx) {
 		actuator = impl.actuatorMaster
@@ -50,7 +50,7 @@ func (impl *SQLReaderImpl) Get(ctx context.Context, query string, args []any, de
 	return nil
 }
 
-func (impl *SQLReaderImpl) Find(ctx context.Context, query string, args []any, dest any) (err error) {
+func (impl *reader) Find(ctx context.Context, query string, args []any, dest any) (err error) {
 	actuator := impl.actuator
 	if contextlib.IsUseMasterDB(ctx) {
 		actuator = impl.actuatorMaster

@@ -10,23 +10,25 @@ import (
 	"os/signal"
 	"strconv"
 	"syscall"
+
+	"github.com/flazhgrowth/fg-tamagochi/appconfig"
 )
 
-func (app *Server) Run() error {
+func (app *Server) Run(cfg appconfig.HTTPServerConfig) error {
 	srv := http.Server{
-		ReadTimeout:  app.appCfg.HTTPServer.Timeout.ReadTimeout.Val("second"),
-		WriteTimeout: app.appCfg.HTTPServer.Timeout.WriteTimeout.Val("second"),
-		IdleTimeout:  app.appCfg.HTTPServer.Timeout.IdleTimeout.Val("second"),
+		ReadTimeout:  cfg.Timeout.ReadTimeout.Val("second"),
+		WriteTimeout: cfg.Timeout.WriteTimeout.Val("second"),
+		IdleTimeout:  cfg.Timeout.IdleTimeout.Val("second"),
 		Handler:      app.serverRouter.Routes(),
 	}
-	listener, err := getListener(app.appCfg.HTTPServer.Server)
+	listener, err := getListener(cfg.Server)
 	if err != nil {
 		return err
 	}
 
 	go func() {
 		fmt.Println("listening with pid " + fmt.Sprint(os.Getpid()))
-		fmt.Printf("webserver runs on: %s\n", app.appCfg.HTTPServer.Server)
+		fmt.Printf("webserver runs on: %s\n", cfg.Server)
 		srv.Serve(listener)
 	}()
 	sigs := make(chan os.Signal, 1)

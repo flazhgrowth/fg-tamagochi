@@ -25,6 +25,7 @@ func (req *RequestImpl) DecodeBody(dest any) error {
 
 func (req *RequestImpl) DecodeQueryParam(dest any) error {
 	decoder := schema.NewDecoder()
+	decoder.SetAliasTag("query")
 	decoder.IgnoreUnknownKeys(true)
 
 	if err := decoder.Decode(dest, req.URL.Query()); err != nil {
@@ -67,6 +68,24 @@ func (req *RequestImpl) DecodeURLParam(dest any) error {
 				continue
 			}
 			fieldVal.SetBool(actualValue)
+		case "int64":
+			val, err := paramVal.Int64()
+			if err != nil {
+				continue
+			}
+			fieldVal.SetInt(val)
+		case "uint64":
+			val, err := paramVal.Uint64()
+			if err != nil {
+				continue
+			}
+			fieldVal.SetUint(val)
+		case "float64":
+			val, err := paramVal.Float64()
+			if err != nil {
+				continue
+			}
+			fieldVal.SetFloat(val)
 		default:
 			continue
 		}

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/driver"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
 	"github.com/jmoiron/sqlx"
 )
@@ -31,24 +32,26 @@ type SQLWriter interface {
 	Insert(ctx context.Context, query string, args []any, dest any) (err error)
 }
 
-type SQLWriterImpl struct {
+type writer struct {
 	actuator *sqlx.DB
 }
 
 func New(db *sqlx.DB) SQLWriter {
-	return &SQLWriterImpl{actuator: db}
+	return &writer{actuator: db}
 }
 
-var driverToLastInsertedID map[string]func(r sql.Result) (lastInsertedID int64, err error) = map[string]func(r sql.Result) (lastInsertedID int64, err error){
-	"postgres": func(r sql.Result) (lastInsertedID int64, err error) {
+type lastInsertFn func(r sql.Result) (lastInsertedID int64, err error)
+
+var driverToLastInsertedID map[driver.Driver]lastInsertFn = map[driver.Driver]lastInsertFn{
+	driver.DriverPostgres: func(r sql.Result) (lastInsertedID int64, err error) {
 		return 0, nil
 	},
-	"mysql": func(r sql.Result) (lastInsertedID int64, err error) {
+	driver.DriverMySql: func(r sql.Result) (lastInsertedID int64, err error) {
 		return r.LastInsertId()
 	},
 }
 
-func (impl *SQLWriterImpl) Write(ctx context.Context, query string, args []any) (lastInsertedID int64, err error) {
+func (impl *writer) Write(ctx context.Context, query string, args []any) (lastInsertedID int64, err error) {
 	tx, finishFn, isNewTx := sqltx.GetTxFromContext(ctx, impl.actuator)
 	if isNewTx {
 		defer finishFn(tx, &err)
@@ -58,7 +61,7 @@ func (impl *SQLWriterImpl) Write(ctx context.Context, query string, args []any) 
 	if err != nil {
 		return 0, err
 	}
-	lastInsertedIDHandler, found := driverToLastInsertedID[impl.actuator.DriverName()]
+	lastInsertedIDHandler, found := driverToLastInsertedID[driver.Driver(impl.actuator.DriverName())]
 	if !found {
 		return 0, nil
 	}
@@ -66,7 +69,7 @@ func (impl *SQLWriterImpl) Write(ctx context.Context, query string, args []any) 
 	return lastInsertedIDHandler(res)
 }
 
-func (impl *SQLWriterImpl) Insert(ctx context.Context, query string, args []any, dest any) (err error) {
+func (impl *writer) Insert(ctx context.Context, query string, args []any, dest any) (err error) {
 	tx, finishFn, isNewTx := sqltx.GetTxFromContext(ctx, impl.actuator)
 	if isNewTx {
 		defer finishFn(tx, &err)
