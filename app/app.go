@@ -25,6 +25,9 @@ type App struct {
 }
 
 func New(appCfg *appconfig.AppConfig) *App {
+	app := &App{
+		appCfg: appCfg,
+	}
 	// initialize configs, vault, and featureflags
 	if err := vault.New(); err != nil {
 		panic(fmt.Sprintf("error initializing vaults: %s", err.Error()))
@@ -37,11 +40,13 @@ func New(appCfg *appconfig.AppConfig) *App {
 	}
 
 	// init db
-	sqlator, txsqlator := sqlator.New(sqlator.SQLatorConfig{
-		Driver:    string(vault.GetVault().Database.Driver),
-		WriterDSN: vault.GetVault().Database.WriterDSN,
-		ReaderDSN: vault.GetVault().Database.ReaderDSN,
-	})
+	if app.appCfg.UseDB {
+		app.sqlator, app.txsqlator = sqlator.New(sqlator.SQLatorConfig{
+			Driver:    string(vault.GetVault().Database.Driver),
+			WriterDSN: vault.GetVault().Database.WriterDSN,
+			ReaderDSN: vault.GetVault().Database.ReaderDSN,
+		})
+	}
 
 	corsBaseOpts := cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -99,17 +104,11 @@ func New(appCfg *appconfig.AppConfig) *App {
 	}
 	fgmw.RegisterMiddlewares(mws...)
 
-	var cacheClient cache.Cache
 	if appCfg.UseCache {
-		cacheClient = cache.New(cache.CacheConfig{})
+		app.cache = cache.New(cache.CacheConfig{})
 	}
 
-	return &App{
-		appCfg:    appCfg,
-		sqlator:   sqlator,
-		txsqlator: txsqlator,
-		cache:     cacheClient,
-	}
+	return app
 }
 
 func (app *App) Cfg() *appconfig.AppConfig {

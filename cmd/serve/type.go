@@ -12,4 +12,7 @@ type ServeCmdArgs struct {
 	GetRoutesFn func(app *app.App) router.Router
 	Middlewares map[middleware.HTTPMiddleware]func(next http.Handler) http.Handler
 	CorsOpts    *middleware.CorsOpt
+
+	UseDB    bool
+	UseCache bool
 }

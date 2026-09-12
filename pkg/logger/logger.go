@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/flazhgrowth/fg-gotools/ulid"
 	"github.com/rs/zerolog/log"
 )
 
@@ -22,10 +23,12 @@ func (lw LogPath) With(postfix string) LogPath {
 	return LogPath(fmt.Sprintf("%s.%s", lw, postfix))
 }
 
-func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata ...LogMeta) {
+func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata ...LogMeta) string {
+	id, _ := ulid.Generate()
 	e := log.Error().
 		Ctx(ctx).
 		Err(err).
+		Str("id", id).
 		Str("path", string(lw))
 	for _, logdatum := range logdata {
 		for key, val := range logdatum {
@@ -34,6 +37,8 @@ func (lw LogPath) LogError(ctx context.Context, msg string, err error, logdata .
 	}
 
 	e.Msg(msg)
+
+	return id
 }
 
 func (lw LogPath) LogDebug(ctx context.Context, msg string, logdata ...LogMeta) {
@@ -62,9 +67,11 @@ func (lw LogPath) LogInfo(ctx context.Context, msg string, logdata ...LogMeta) {
 	e.Msg(msg)
 }
 
-func (lw LogPath) LogFatal(ctx context.Context, msg string, err error, logdata ...LogMeta) {
+func (lw LogPath) LogFatal(ctx context.Context, msg string, err error, logdata ...LogMeta) string {
+	id, _ := ulid.Generate()
 	e := log.Fatal().
 		Ctx(ctx).
+		Str("id", id).
 		Str("path", string(lw))
 	if err != nil {
 		e.Err(err)
@@ -75,4 +82,6 @@ func (lw LogPath) LogFatal(ctx context.Context, msg string, err error, logdata .
 		}
 	}
 	e.Msg(msg)
+
+	return id
 }

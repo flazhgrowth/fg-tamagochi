@@ -9,38 +9,45 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func (r *RouterImpl) Get(path string, h handler.HTTPHandlerFunc, docs ...RouterDocs) {
-	if len(docs) > 0 {
-		r.handleDocs(http.MethodGet, path, docs[0])
+var errNilDocs error = fmt.Errorf("docs cannot be nil")
+
+func (r *RouterImpl) Get(path string, h handler.HTTPHandlerFunc, docs *RouterDocs) {
+	if docs == nil {
+		panic(errNilDocs)
 	}
+	r.handleDocs(http.MethodGet, path, docs)
 	r.mux.Get(path, handle(h))
 }
 
-func (r *RouterImpl) Post(path string, h handler.HTTPHandlerFunc, docs ...RouterDocs) {
-	if len(docs) > 0 {
-		r.handleDocs(http.MethodPost, path, docs[0])
+func (r *RouterImpl) Post(path string, h handler.HTTPHandlerFunc, docs *RouterDocs) {
+	if docs == nil {
+		panic(errNilDocs)
 	}
+	r.handleDocs(http.MethodPost, path, docs)
 	r.mux.Post(path, handle(h))
 }
 
-func (r *RouterImpl) Put(path string, h handler.HTTPHandlerFunc, docs ...RouterDocs) {
-	if len(docs) > 0 {
-		r.handleDocs(http.MethodPut, path, docs[0])
+func (r *RouterImpl) Put(path string, h handler.HTTPHandlerFunc, docs *RouterDocs) {
+	if docs == nil {
+		panic(errNilDocs)
 	}
+	r.handleDocs(http.MethodPut, path, docs)
 	r.mux.Put(path, handle(h))
 }
 
-func (r *RouterImpl) Patch(path string, h handler.HTTPHandlerFunc, docs ...RouterDocs) {
-	if len(docs) > 0 {
-		r.handleDocs(http.MethodPatch, path, docs[0])
+func (r *RouterImpl) Patch(path string, h handler.HTTPHandlerFunc, docs *RouterDocs) {
+	if docs == nil {
+		panic(errNilDocs)
 	}
+	r.handleDocs(http.MethodPatch, path, docs)
 	r.mux.Patch(path, handle(h))
 }
 
-func (r *RouterImpl) Delete(path string, h handler.HTTPHandlerFunc, docs ...RouterDocs) {
-	if len(docs) > 0 {
-		r.handleDocs(http.MethodDelete, path, docs[0])
+func (r *RouterImpl) Delete(path string, h handler.HTTPHandlerFunc, docs *RouterDocs) {
+	if docs == nil {
+		panic(errNilDocs)
 	}
+	r.handleDocs(http.MethodDelete, path, docs)
 	r.mux.Delete(path, handle(h))
 }
 

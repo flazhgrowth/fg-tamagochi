@@ -17,15 +17,15 @@ import (
 )
 
 type Router interface {
-	Get(pattern string, h handler.HTTPHandlerFunc, docs ...RouterDocs)
+	Get(pattern string, h handler.HTTPHandlerFunc, docs *RouterDocs)
 
-	Post(pattern string, h handler.HTTPHandlerFunc, docs ...RouterDocs)
+	Post(pattern string, h handler.HTTPHandlerFunc, docs *RouterDocs)
 
-	Put(pattern string, h handler.HTTPHandlerFunc, docs ...RouterDocs)
+	Put(pattern string, h handler.HTTPHandlerFunc, docs *RouterDocs)
 
-	Patch(pattern string, h handler.HTTPHandlerFunc, docs ...RouterDocs)
+	Patch(pattern string, h handler.HTTPHandlerFunc, docs *RouterDocs)
 
-	Delete(pattern string, h handler.HTTPHandlerFunc, docs ...RouterDocs)
+	Delete(pattern string, h handler.HTTPHandlerFunc, docs *RouterDocs)
 
 	Options(pattern string, h handler.HTTPHandlerFunc)
 

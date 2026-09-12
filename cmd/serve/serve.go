@@ -28,6 +28,9 @@ func serve(cmdArgs ServeCmdArgs) {
 	app := app.New(&appconfig.AppConfig{
 		Middlewares: cmdArgs.Middlewares,
 		CorsOpt:     cmdArgs.CorsOpts,
+
+		UseDB:    cmdArgs.UseDB,
+		UseCache: cmdArgs.UseCache,
 	})
 
 	if err := app.

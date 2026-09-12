@@ -4,6 +4,7 @@ go 1.26.0
 
 require (
 	github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06
+	github.com/Masterminds/squirrel v1.5.4
 	github.com/flazhgrowth/fg-gotools v0.0.0-20250624154829-00a29e2439cf
 	github.com/getbrevo/brevo-go v1.1.3
 	github.com/go-chi/chi/v5 v5.2.1
@@ -20,7 +21,6 @@ require (
 )
 
 require (
-	github.com/Masterminds/squirrel v1.5.4 // indirect
 	github.com/antihax/optional v1.0.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -34,6 +34,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	github.com/oklog/ulid/v2 v2.1.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect

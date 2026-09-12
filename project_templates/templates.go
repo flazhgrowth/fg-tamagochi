@@ -27,78 +27,88 @@ func main() {
 	cmd.Conjure(cmd.CmdArgs{
 		ServeCmdArgs: serve.ServeCmdArgs{
 			GetRoutesFn: func(app *app.App) router.Router {
-				return router.NewRouter()
+				return router.NewRouter(router.OpenAPISpecInfo{
+					Title:   "tamagochi service",
+					Version: "0.0.1",
+					Desc:    "tamagochi service api",
+				})
 			},
 		},
 	})
 }
 	`
 
-	EntityTemplate ProjectTemplate = `package {{.entity}}`
+	EntityEmptyTemplate      ProjectTemplate = `package {{.entity}}`
+	EntityInterfacesTemplate ProjectTemplate = `package {{.entity}}
 
-	EntityAPIInterfaceTemplate ProjectTemplate = `package {{.entity}}
-
-type {{.entity_title}}API interface {}
+type API interface {}
+type Service interface {}
+type Repository interface {}
+	`
+	EntityDatabaseTemplate ProjectTemplate = `package {{.entity}}
+type (
+	{{.entity_title}} struct {}
+)
+	`
+	EntityFilterSorterFieldsTemplate ProjectTemplate = `package {{.entity}}
+type (
+	{{.entity_title}}Filter struct {}
+	{{.entity_title}}Sorter struct {}
+	{{.entity_title}}UpdateFields struct {}
+)
 	`
 
-	EntityUsecaseInterfaceTemplate ProjectTemplate = `package {{.entity}}
-
-type {{.entity_title}}Usecase interface {}
-	`
-
-	EntityRepositoryInterfaceTemplate ProjectTemplate = `package {{.entity}}
-
-type {{.entity_title}}Repository interface {}
-	`
-
-	TransportImplTemplate ProjectTemplate = `package {{.entity}}api
+	APIImplTemplate ProjectTemplate = `package {{.entity}}api
 
 import "{{.packagename}}/internal/entity/{{.entity}}"
 
-type API struct {
-	{{.entity}}Usecase {{.entity}}.{{.entity_title}}Usecase
+type api struct {
+	{{.entity}}Svc {{.entity}}.Service
 }
 
-func New({{.entity}}usecase {{.entity}}.{{.entity_title}}Usecase) {{.entity}}.{{.entity_title}}API {
-	return &API{
-		{{.entity}}Usecase: {{.entity}}usecase,
+func New({{.entity}}svc {{.entity}}.Service) {{.entity}}.API {
+	return &api{
+		{{.entity}}Svc: {{.entity}}svc,
 	}
 }
 	`
 
-	TransportImplEmptyTemplate ProjectTemplate = `package {{.entity}}api`
+	APIImplEmptyTemplate ProjectTemplate = `package {{.entity}}api`
 
-	UsecaseImplTemplate ProjectTemplate = `package {{.entity}}uc
+	ServiceImplTemplate ProjectTemplate = `package {{.entity}}svc
 
 import "{{.packagename}}/internal/entity/{{.entity}}"
 
-type Usecase struct {
-	{{.entity}}Repo {{.entity}}.{{.entity_title}}Repository
+type service struct {
+	{{.entity}}Repo {{.entity}}.Repository
 }
 
-func New({{.entity}}repo {{.entity}}.{{.entity_title}}Repository) {{.entity}}.{{.entity_title}}Usecase {
-	return &Usecase{
+func New({{.entity}}repo {{.entity}}.Repository) {{.entity}}.Service {
+	return &service{
 		{{.entity}}Repo: {{.entity}}repo,
 	}
 }
 	`
 
-	UsecaseImplEmptyTemplate ProjectTemplate = `package {{.entity}}uc`
+	ServiceImplEmptyTemplate ProjectTemplate = `package {{.entity}}uc`
 
 	DBRepositoryImplTemplate ProjectTemplate = `package {{.entity}}repo
 
 import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator"
+	"github.com/flazhgrowth/fg-tamagochi/pkg/db/sqlator/sqltx"
 	"{{.packagename}}/internal/entity/{{.entity}}"
 )
 
-type Repository struct {
-	actuator sqlator.SQLator
+type repository struct {
+	actuator 	sqlator.SQLator
+	tx 			sqltx.SQLTx
 }
 
-func New(actuator sqlator.SQLator) {{.entity}}.{{.entity_title}}Repository {
-	return &Repository{
-		actuator: actuator,
+func New(actuator sqlator.SQLator, tx sqltx.SQLTx) {{.entity}}.Repository {
+	return &repository{
+		actuator: 	actuator,
+		tx:			tx,
 	}
 }
 	`
@@ -114,16 +124,19 @@ http:
     write: '30'
     read: '30'
     idle: '30'
-  server: '11011'`
+  server: '11011'
+  `
 	VaultTemplate ProjectTemplate = `{
 	"database": {
 		"driver": "postgres",
 		"reader_dsn": "dsn",
 		"writer_dsn": "dsn"
 	}
-}`
+}
+	`
 	FeatureflagTemplate ProjectTemplate = `
-	example_feature_enabled: true`
+example_feature_enabled: true
+	`
 )
 
 func (templ ProjectTemplate) WriteTo(path string, binding map[string]any) error {

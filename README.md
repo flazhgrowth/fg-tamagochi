@@ -16,7 +16,7 @@ Think of Conjurer as the main tools to do anything that related to a project, wh
 
 Hence, to install Conjurer CLI, use the command below:
 ```
-go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v0.2.0
+go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v1.0.0
 ```
 This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that Tamagochi has not yet reach a stable version.
 
@@ -123,3 +123,6 @@ Docs TBA
 
 ### (WE WON'T FORCE, BUT PLEASE CONSIDER) How Tamagochi structure its project
 Docs TBA
+
+### Roadmap
+1. As tamagochi now uses the minimum of go1.26, net/http now supports better routing (prior to go1.22). While building on top of chi is still preferable, due to chi itself is still well maintained and the good community as well, I have been thinking of using standard net/http routing for tamagochi router.

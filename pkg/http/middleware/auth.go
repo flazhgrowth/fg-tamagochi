@@ -25,18 +25,18 @@ func BasicBearerAuthMiddleware(next http.Handler) http.Handler {
 		resp := response.New(w)
 		secHeaders := req.SecurityHeaders()
 		if !secHeaders.IsAuth {
-			resp.Respond(nil, apierrors.ErrorUnauthorized())
+			resp.RespondJSON(nil, apierrors.ErrorUnauthorized())
 			return
 		}
 
 		token := jwt.NewJWT()
 		claims, err := token.ValidateToken(secHeaders.Authorization, vault.GetVault().GetStringWithDefault("tokens.secret", ""))
 		if err != nil {
-			resp.Respond(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
+			resp.RespondJSON(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
 			return
 		}
 		if claims.ExpiresAt.Before(time.Now()) || claims.ID == "" {
-			resp.Respond(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
+			resp.RespondJSON(nil, apierrors.ErrorUnauthorized(jwt.ErrInvalidToken.Error()))
 			return
 		}
 		ctx := r.Context()

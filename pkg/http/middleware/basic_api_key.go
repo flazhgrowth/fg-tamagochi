@@ -20,17 +20,17 @@ func BasicAPIKeyMiddleware(key string) func(next http.Handler) http.Handler {
 			resp := response.New(w)
 			secret := vault.GetVault().GetStringWithDefault("secret.apikey", "")
 			if secret == "" {
-				resp.Respond(nil, apierrors.ErrorBadRequest("apikey is not set").WithCode("invalid_api_key"))
+				resp.RespondJSON(nil, apierrors.ErrorBadRequest("apikey is not set").WithCode("invalid_api_key"))
 				return
 			}
 
 			if apikey == "" {
-				resp.Respond(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
+				resp.RespondJSON(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
 				return
 			}
 			hashedApikey := sha256.Hash(apikey)
 			if hashedApikey != secret {
-				resp.Respond(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
+				resp.RespondJSON(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
 				return
 			}
 

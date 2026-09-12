@@ -129,16 +129,17 @@ By this example, we assume you have a route that basically looks like this (eg: 
 
 Please note that the annotation also provide `pathtype` with values of string, number, and bool. Besides string and bool that are pretty straighforward, number will cast the value into int64. We recommend fraction value to be annotated using string, and you manually cast it yourself to your desired destination type.
 
-You can always use `URLParam`, and access it one by one (and we still recommend you to use `URLParam` like how you normally would. `DecodeURLParam` uses package reflect under the hood. So it will slower regardless. By a fraction most likely, but we still need to state this.)
+You can always use `URLParam`, and access it one by one (and we still recommend you to use `URLParam` like how you normally would. `DecodeURLParam` uses package reflect under the hood. So it will be slower regardless. By a fraction most likely, but we still need to address this.)
 
 2. **response.Response is from package `github.com/flazhgrowth/fg-tamagochi/pkg/http/response`**
-There's not much we can do with `response.Response`. We use response to write HTTP response. If you see the above example, we use `w` (of type response.Response) method, which is `Respond`. Method `Respond` accepts 3 arguments, which is data (any) and error, and status code (optional).
+
+There's not much we can do with `response.Response`. We use response to write HTTP response. If you see the above example, we use `w` (of type response.Response) method, which is `RespondJSON`. Method `RespondJSON` accepts 3 arguments, which is data (any) and error, and status code (optional).
 
 By default, you won't need to pass status code in here. If the data passed is not nil, it will be Status Code 200 by default. If error passed, it will check if the error is an `github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors` type. If it's not, it will then use Status Code 500 by default.
 
 But, maybe it's an insert/create api, in which, on success, you want to return Status Code 201. This is perfectly doable using the third argument like so:
 ```
-w.Respond(data, nil, http.StatusCreated)
+w.RespondJSON(data, nil, http.StatusCreated)
 ```
 
 ### [3] Router docs
@@ -204,7 +205,7 @@ This approach ensures that every needed middleware is registered on the main `Co
 ```
 // assuming that you already registered a new middleware called "super_printer"
 // you can use the registered middleware like so:
-rtr.Use("super_printer") // type middleware.HTTPMiddleware is an alias to string. In which, its perfectly okay to pass string here. But we recommend you to make a constant with type middleware.HTTPMiddleware, so you can avoid of mistyping errors.
+rtr.Use("super_printer") // type middleware.HTTPMiddleware is an alias to string. In which, it's perfectly okay to pass string here. But we recommend you to make a constant with type middleware.HTTPMiddleware, so you can avoid of mistyping errors.
 ```
 More of middlewares, please refer to [Middleware Section](./middleware.md)
 
@@ -220,13 +221,13 @@ parentR.Group("/resources", func(r router.Router) {
 This will then group `/foo/bar` and `/foo/bezt` under `/resources` endpoint. Hence to access this API, the full endpoint would be `/resources/foo/bar` and `/resources/foo/bezt`.
 
 ### [11] Scope(fn func(r Router))
-Pretty much the same with Group, but instead of group a few endpoints under a prefix pattern, it just scope it without any prefix pattern. Useful if you don't want to use group, but you need to do something to multiple endpoints, lets say, a middleware.
+Pretty much the same with Group, but instead of group a few endpoints under a prefix pattern, it just scope it without any prefix pattern. Useful if you don't want to use group, but you need to do something to multiple endpoints, lets say, applying middlewares.
 
 ### [12] Mount(pattern string, fn http.Handler)
 Let's say you want to do something that a bit more native to chi, we provide Mount method that accepts pattern and native http.Handler.
 
 ### [13] ServeDocs(pattern ...string)
-ServeDocs will serve the Scalar Docs created when you run the app. For now, our only option for security is to expose this on non production environment only. Of course, you can expose this manually like how you normally do. It will also give you a better control on how you want to serve the swagger.
+ServeDocs will serve the Scalar Docs created when you run the app. For now, our only option for security is to expose this on non production environment only. Of course, you can expose this manually like how you normally do. It will also give you a better control on how you want to serve the Scalar Docs.
 
-### [13] ServeProfiler(pattern ...string)
+### [14] ServeProfiler(pattern ...string)
 Use this method if you want to serve profiler (using pprof under chi middleware Profiler). By default, it will be mounted under endpoint `/pprof/profiler`. But if you pass a pattern on the argument, it will then mount it through the pattern passed.

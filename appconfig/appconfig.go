@@ -11,6 +11,7 @@ type (
 	AppConfig struct {
 		Middlewares map[middleware.HTTPMiddleware]func(next http.Handler) http.Handler
 		CorsOpt     *middleware.CorsOpt
+		UseDB       bool
 		UseCache    bool
 	}
 

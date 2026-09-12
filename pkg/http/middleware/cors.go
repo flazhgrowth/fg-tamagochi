@@ -24,7 +24,7 @@ func Cors(opts CorsOpt) func(next http.Handler) http.Handler {
 
 			for _, handler := range opts.ValidatorHandlers {
 				if err := handler(req); err != nil {
-					resp.Respond(nil, err)
+					resp.RespondJSON(nil, err)
 					return
 				}
 			}

@@ -5,4 +5,5 @@ type BaseResponse struct {
 	Code       string `json:"code"`
 	Message    string `json:"message"`
 	Data       any    `json:"data"`
+	ServerTime int64  `json:"servertime"`
 }

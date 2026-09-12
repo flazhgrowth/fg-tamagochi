@@ -7,7 +7,7 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 )
 
-func (resp *ResponseImpl) Respond(data any, err error, statusCode ...int) {
+func (resp *ResponseImpl) RespondJSON(data any, err error, statusCode ...int) {
 	baseResp := BaseResponse{
 		StatusCode: http.StatusOK,
 		Code:       "success",

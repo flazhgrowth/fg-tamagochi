@@ -33,6 +33,7 @@ type (
 
 	ProjectImplementationsSchema struct {
 		Transport  map[string]DirectoryElementsSchema `json:"transport"`
+		Service    map[string]DirectoryElementsSchema `json:"service"`
 		Usecase    map[string]DirectoryElementsSchema `json:"usecase"`
 		Repository map[string]DirectoryElementsSchema `json:"repository"`
 	}

@@ -42,7 +42,7 @@ func checkToolsAvailibility(cmd *cobra.Command) {
 		case "migrate":
 			execCmd = exec.Command(key, "-version")
 		case "mockery":
-			execCmd = exec.Command(key, "--version")
+			execCmd = exec.Command(key, "version")
 		}
 		_, err := execCmd.CombinedOutput()
 		if err != nil {
@@ -87,18 +87,18 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 		"account": {
 			Implementations: entity.ProjectImplementationsSchema{
 				Transport: map[string]entity.DirectoryElementsSchema{
-					"acccountapi": []string{"account.go", "type.go"},
+					"acccountapi": []string{"accountapi.go"},
 				},
-				Usecase: map[string]entity.DirectoryElementsSchema{
-					"accountuc": {"account.go", "type.go"},
+				Service: map[string]entity.DirectoryElementsSchema{
+					"accountsvc": {"accountsvc.go"},
 				},
 				Repository: map[string]entity.DirectoryElementsSchema{
-					"accountrepo": {"account.go", "type.go"},
+					"accountrepo": {"accountrepo.go"},
 				},
 			},
 			Entities: map[string]entity.DirectoryElementsSchema{
 				"account": {
-					"account.go", "api.go", "usecase.go", "repository.go", "type.go", "database.go",
+					"account.go", "interface.go", "database.go", "filter_sorter.go",
 				},
 			},
 			Database: entity.DirectoryElementsSchema{
@@ -151,14 +151,14 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 			return
 		}
 
-		// transport dir and its elements
+		// transport api implementations dir and its elements
 		for dirName, dirElems := range selectedEntity.Implementations.Transport {
-			currentDir := implementationsDirName.EndWith("/transport") // ./internal/implementations/transport
+			currentDir := implementationsDirName.EndWith("/api") // ./internal/implementations/api
 			if err := mkDir(currentDir.Val()); err != nil {
 				log.Error().Msgf("error on creating %s dir: %s", currentDir.Val(), err.Error())
 				return
 			}
-			currentDir = currentDir.EndWith(dirName) // ./internal/implementations/transport/accountapi
+			currentDir = currentDir.EndWith(dirName) // ./internal/implementations/api/accountapi
 			if err := mkDir(currentDir.Val()); err != nil {
 				log.Error().Msgf("error on creating %s dir: %s", currentDir.Val(), err.Error())
 				return
@@ -166,9 +166,9 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 
 			for _, dirElem := range dirElems {
 				filepath := currentDir.EndWith(dirElem).Val()
-				selectedTemplate := projecttemplates.TransportImplEmptyTemplate
-				if strings.Contains(dirElem, ent) {
-					selectedTemplate = projecttemplates.TransportImplTemplate
+				selectedTemplate := projecttemplates.APIImplEmptyTemplate
+				if strings.EqualFold(dirElem, fmt.Sprintf("%sapi.go", ent)) {
+					selectedTemplate = projecttemplates.APIImplTemplate
 				}
 				if err := selectedTemplate.WriteTo(filepath, map[string]any{
 					"entity":       ent,
@@ -181,14 +181,14 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 			}
 		}
 
-		// usecase dir and its elements
-		for dirName, dirElems := range selectedEntity.Implementations.Usecase {
-			currentDir := implementationsDirName.EndWith("/usecase") // ./internal/implementations/usecase
+		// service implementations dir and its elements
+		for dirName, dirElems := range selectedEntity.Implementations.Service {
+			currentDir := implementationsDirName.EndWith("/service") // ./internal/implementations/service
 			if err := mkDir(currentDir.Val()); err != nil {
 				log.Error().Msgf("error on creating %s dir: %s", currentDir.Val(), err.Error())
 				return
 			}
-			currentDir = currentDir.EndWith(dirName) // ./internal/implementations/usecase/accountuc
+			currentDir = currentDir.EndWith(dirName) // ./internal/implementations/service/accountsvc
 			if err := mkDir(currentDir.Val()); err != nil {
 				log.Error().Msgf("error on creating %s dir: %s", currentDir.Val(), err.Error())
 				return
@@ -196,9 +196,9 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 
 			for _, dirElem := range dirElems {
 				filepath := currentDir.EndWith(dirElem).Val()
-				selectedTemplate := projecttemplates.UsecaseImplEmptyTemplate
+				selectedTemplate := projecttemplates.ServiceImplEmptyTemplate
 				if strings.Contains(dirElem, ent) {
-					selectedTemplate = projecttemplates.UsecaseImplTemplate
+					selectedTemplate = projecttemplates.ServiceImplTemplate
 				}
 				if err := selectedTemplate.WriteTo(filepath, map[string]any{
 					"entity":       ent,
@@ -255,13 +255,16 @@ func initAppStructures(cmd *cobra.Command, args []string) {
 
 			for _, dirElem := range entitiesDirElems {
 				filepath := currentDir.EndWith(dirElem).Val()
-				selectedEntity := projecttemplates.EntityTemplate
-				if strings.Contains(dirElem, "api") {
-					selectedEntity = projecttemplates.EntityAPIInterfaceTemplate
-				} else if strings.Contains(dirElem, "usecase") {
-					selectedEntity = projecttemplates.EntityUsecaseInterfaceTemplate
-				} else if strings.Contains(dirElem, "repository") {
-					selectedEntity = projecttemplates.EntityRepositoryInterfaceTemplate
+				selectedEntity := projecttemplates.EntityEmptyTemplate
+				switch dirElem {
+				case fmt.Sprintf("%s.go", ent):
+					selectedEntity = projecttemplates.EntityEmptyTemplate
+				case "interface.go":
+					selectedEntity = projecttemplates.EntityInterfacesTemplate
+				case "database.go":
+					selectedEntity = projecttemplates.EntityDatabaseTemplate
+				case "filter_sorter.go":
+					selectedEntity = projecttemplates.EntityFilterSorterFieldsTemplate
 				}
 				if err := selectedEntity.WriteTo(filepath, map[string]any{
 					"entity":       ent,

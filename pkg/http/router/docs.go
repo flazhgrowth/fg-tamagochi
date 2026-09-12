@@ -9,7 +9,7 @@ import (
 	"github.com/flazhgrowth/fg-tamagochi/pkg/logger"
 )
 
-func (r *RouterImpl) handleDocs(method string, path string, docs RouterDocs) {
+func (r *RouterImpl) handleDocs(method string, path string, docs *RouterDocs) {
 	endpoint := path
 	if r.prevPath != "" {
 		endpoint = fmt.Sprintf("%s%s", r.prevPath, path)
