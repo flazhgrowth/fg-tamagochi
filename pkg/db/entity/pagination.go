@@ -1,8 +1,8 @@
 package entity
 
 type PaginationRequest struct {
-	Page int `schema:"page"`
-	Size int `schema:"size"`
+	Page int `query:"page"`
+	Size int `query:"size"`
 }
 
 func (pagination *PaginationRequest) NormalizePagination(defaultSize int) *PaginationRequest {
