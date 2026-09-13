@@ -88,10 +88,6 @@ func New(appCfg *appconfig.AppConfig) *App {
 			Name:    fgmw.MIDDLEWARE_LOGGER,
 			Handler: middleware.Logger,
 		},
-		{
-			Name:    fgmw.MIDDLEWARE_BASIC_API_KEY,
-			Handler: fgmw.BasicAPIKeyMiddleware("X-API-Key"),
-		},
 	}
 	// register additional middlewares defined by user
 	if len(appCfg.Middlewares) > 0 {
