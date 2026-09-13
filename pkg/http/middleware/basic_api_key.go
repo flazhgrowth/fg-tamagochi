@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/flazhgrowth/fg-gotools/hash/sha256"
@@ -16,9 +17,9 @@ import (
 func BasicAPIKeyMiddleware(key string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			apikey := w.Header().Get(key)
+			apikey := w.Header().Get("X-API-Key")
 			resp := response.New(w)
-			secret := vault.GetVault().GetStringWithDefault("secret.apikey", "")
+			secret := vault.GetVault().GetStringWithDefault(fmt.Sprintf("secret.apikey.%s", key), "")
 			if secret == "" {
 				resp.RespondJSON(nil, apierrors.ErrorBadRequest("apikey is not set").WithCode("invalid_api_key"))
 				return
