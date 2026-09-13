@@ -16,7 +16,7 @@ Think of Conjurer as the main tools to do anything that related to a project, wh
 
 Hence, to install Conjurer CLI, use the command below:
 ```
-go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v1.1.2
+go install github.com/flazhgrowth/fg-tamagochi/cmd/conjurer@v1.1.3
 ```
 This will install conjurer cli. You can type `conjurer conjure` in your terminal to see all the available commands on `conjurer`. Note that Tamagochi has not yet reach a stable version.
 

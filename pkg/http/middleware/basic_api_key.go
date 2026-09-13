@@ -17,7 +17,7 @@ import (
 func BasicAPIKeyMiddleware(key string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			apikey := w.Header().Get("X-API-Key")
+			apikey := r.Header.Get("X-API-Key")
 			resp := response.New(w)
 			secret := vault.GetVault().GetStringWithDefault(fmt.Sprintf("secret.apikey.%s", key), "")
 			if secret == "" {
