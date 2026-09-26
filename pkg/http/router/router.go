@@ -9,7 +9,7 @@ import (
 	"github.com/MarceloPetrucio/go-scalar-api-reference"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/handler"
 	fgmw "github.com/flazhgrowth/fg-tamagochi/pkg/http/middleware"
-	"github.com/flazhgrowth/fg-tamagochi/pkg/logger"
+	"github.com/flazhgrowth/fg-tamagopkg/logger"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/swaggest/openapi-go"

@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
-	"github.com/flazhgrowth/fg-tamagochi/pkg/logger"
+	"github.com/flazhgrowth/fg-tamagopkg/logger"
 )
 
 func (r *RouterImpl) handleDocs(method string, path string, docs *RouterDocs) {

@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/MarceloPetrucio/go-scalar-api-reference v0.0.0-20240521013641-ce5d2efe0e06
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/flazhgrowth/fg-gotools v0.0.0-20250624154829-00a29e2439cf
+	github.com/flazhgrowth/fg-tamagopkg v0.0.0-20260926134353-62e1f9f64c34
 	github.com/getbrevo/brevo-go v1.1.3
 	github.com/go-chi/chi/v5 v5.2.1
 	github.com/go-chi/cors v1.2.1

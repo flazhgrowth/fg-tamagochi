@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/flazhgrowth/fg-gotools/hash/sha256"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/response"
 	"github.com/flazhgrowth/fg-tamagochi/pkg/vault"
+	"github.com/flazhgrowth/fg-tamagopkg/hash/sha256"
 )
 
 // BasicAPIKeyMiddleware adds a security check, by checking header value of X-API-Key
@@ -29,7 +29,7 @@ func BasicAPIKeyMiddleware(key string) func(next http.Handler) http.Handler {
 				resp.RespondJSON(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
 				return
 			}
-			hashedApikey := sha256.Hash(apikey)
+			hashedApikey := sha256.Hash(apikey, sha256.HexEncoder)
 			if hashedApikey != secret {
 				resp.RespondJSON(nil, apierrors.ErrorUnauthorized("invalid api key").WithCode("invalid_api_key"))
 				return

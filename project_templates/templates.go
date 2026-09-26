@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"os"
 
-	"github.com/flazhgrowth/fg-gotools/random"
+	"github.com/flazhgrowth/fg-tamagopkg/random"
 )
 
 type (
