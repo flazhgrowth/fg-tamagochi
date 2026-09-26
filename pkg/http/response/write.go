@@ -3,6 +3,7 @@ package response
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/flazhgrowth/fg-tamagochi/pkg/http/apierrors"
 )
@@ -13,6 +14,7 @@ func (resp *ResponseImpl) RespondJSON(data any, err error, statusCode ...int) {
 		Code:       "success",
 		Message:    "Success",
 		Data:       data,
+		ServerTime: time.Now().Unix(),
 	}
 	if len(statusCode) > 0 {
 		baseResp.StatusCode = statusCode[0]
@@ -22,10 +24,12 @@ func (resp *ResponseImpl) RespondJSON(data any, err error, statusCode ...int) {
 		if !ok {
 			ogError = apierrors.ErrorInternalServerError()
 		}
+
 		baseResp.Code = ogError.Code
 		baseResp.Message = ogError.Message
 		baseResp.StatusCode = int(ogError.StatusCode)
 		baseResp.Data = nil
+		baseResp.ErrorID = ogError.ID
 	}
 
 	resp.

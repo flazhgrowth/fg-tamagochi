@@ -6,4 +6,6 @@ type BaseResponse struct {
 	Message    string `json:"message"`
 	Data       any    `json:"data"`
 	ServerTime int64  `json:"servertime"`
+
+	ErrorID string `json:"error_id,omitempty"`
 }

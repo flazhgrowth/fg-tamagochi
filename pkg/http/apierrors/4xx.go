@@ -5,6 +5,27 @@ import (
 	"strings"
 )
 
+// New will return a new HTTPError with user flexibility on setting the status code, code, and message via the function arguments
+func New(statusCode int, code string, msg string) HTTPError {
+	return HTTPError{
+		StatusCode: statusCode,
+		Code:       code,
+		Message:    msg,
+	}
+}
+
+func ErrorConflict(msgs ...string) HTTPError {
+	if len(msgs) > 0 {
+		msgs = []string{"conflict"}
+	}
+
+	return HTTPError{
+		StatusCode: http.StatusConflict,
+		Code:       "conflict",
+		Message:    strings.Join(msgs, ","),
+	}
+}
+
 func ErrorBadRequest(msgs ...string) HTTPError {
 	if len(msgs) == 0 {
 		msgs = []string{"bad request"}
